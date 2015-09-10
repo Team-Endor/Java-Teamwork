@@ -4,7 +4,8 @@ package game;
 
 public class Launcher {
     public static void main(String[] args) {
-        new Display("The Meteor", 800, 600);
+        Game game = new Game("The Meteor", 800, 600);
+        game.start();
 
     }
 }
