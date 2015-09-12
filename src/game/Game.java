@@ -1,9 +1,11 @@
 package game;
 
 import display.Display;
+import gfx.Assets;
 import gfx.ImageLoader;
-import gfx.SpriteSheet;
+import state.State;
 
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
@@ -18,12 +20,14 @@ public class Game implements Runnable {
     private Display display;
 
     private BufferStrategy bs;
-    private java.awt.Graphics g;
+    private Graphics g;
 
-    private SpriteSheet spriteSheet;
-    private int spriteSheetWidth;
-    private int spriteSheetHeight;
-    private int spriteSheetPos;
+    private InputHandler ih;
+
+    private State currentState;
+    private Player player;
+    private Rectangle enemy;
+
 
     public Game(String title, int width, int height) {
         this.width = width;
@@ -33,36 +37,53 @@ public class Game implements Runnable {
     }
 
     public void init() {
-        display = new Display(this.title, this.width, this.height);
-        this.spriteSheet = new SpriteSheet(ImageLoader.loadImage("/images/player.png"));
-        this.spriteSheetWidth = 95;
-        this.spriteSheetHeight = 130;
+        this.display = new Display(this.title, this.width, this.height);
+        this.ih = new InputHandler(this.display);
+        Assets.init();
+
+        // this.currentState = StateManager.getCurrentState();      // gets the current state; to set it use: StateManager.setCurrentState(new MenuState());
+
+        this.player = new Player(100, 100, 50);
+        this.enemy = new Rectangle(500, 100, 20, 150);
     }
 
     private void tick() {
+        this.player.tick();
+        if (this.player.intersects(this.enemy)) {
+            this.player.health -= 50;
+        }
 
+        if (this.player.health <= 0) {
+            System.out.print("You dead, bro!");
+            stop();
+        }
     }
 
     private void render() {
         this.bs = display.getCanvas().getBufferStrategy();
 
         if (this.bs == null) {
-            this.display.getCanvas().createBufferStrategy(2);   // Creates two buffers
+            this.display.getCanvas().createBufferStrategy(2);         // Creates two buffers
             this.bs = display.getCanvas().getBufferStrategy();
         }
 
         this.g = this.bs.getDrawGraphics();
+        this.g.clearRect(0, 0, this.width, this.height);              // clear the last image of the player
 
         BufferedImage img = ImageLoader.loadImage("/images/sky.jpg");
-        g.drawImage(img, 0, 0, null);                           // Load Background image
+        g.drawImage(img, 0, 0, null);                               // Load Background image
 
+        // Begin drawing
 
-        g.drawImage(this.spriteSheet.crop(                      // Crop Spritesheet
-                spriteSheetWidth * this.spriteSheetPos,         // This is called every time in the render
-                0,
-                spriteSheetWidth,
-                spriteSheetHeight), 150, 200, null);
+        this.player.render(this.g);
+        this.g.setColor(Color.red);
+        this.g.fillRect(
+                this.enemy.x,
+                this.enemy.y,
+                this.enemy.width,
+                this.enemy.height);
 
+        // End drawing
 
         this.bs.show();
         this.g.dispose();
@@ -72,17 +93,23 @@ public class Game implements Runnable {
     public void run() {
         init();
 
+        // we make settings, so the "ticks" are equal in time on all computers/ processors
+
+        int fps = 30;                                   // frames per second
+        double timePerTick = 1_000_000_000.0 / fps;     // how much milliseconds it have to wait before a tick; 1 000 000 000 = 1 sec
+        double deltaTime = 0;                           // how much time passed  between now and the last time it ticked
+        long now;
+        long lastTimeTicked = System.nanoTime();        // the value of current time (years/months/days/hours/minutes/seconds) in nano seconds
+
         while (isRunning) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            tick();
-            render();
-            this.spriteSheetPos++;
-            if (this.spriteSheetPos >= 7 ){                     // this needs to revert otherwise outside of boundaries
-                this.spriteSheetPos = 0;
+            now = System.nanoTime();
+            deltaTime += (now - lastTimeTicked) / timePerTick;
+            lastTimeTicked = now;
+
+            if (deltaTime >= 1) {
+                tick();
+                render();
+                deltaTime--;
             }
         }
 
@@ -90,7 +117,7 @@ public class Game implements Runnable {
     }
 
     public synchronized void start() {
-        if (this.isRunning) {                         // Check whether the game is already running, not to create a second thread
+        if (this.isRunning) {                        // Check whether the game is already running, not to create a second thread
             return;
         }
         this.isRunning = true;
