@@ -41,36 +41,44 @@ public class Player {         // TODO think whether to create class Entity
         this.boundingBox = new Rectangle(this.x, this.y);
     }
 
-    public boolean intersects(Rectangle r){         // check for collision
-        if( r.contains(this.boundingBox) &&
-                this.boundingBox.contains(r))
-        {
+    public boolean intersects(Rectangle r) {         // check for collision
+        if (this.boundingBox.x + this.boundingBox.width >= r.x &&
+                this.boundingBox.y + this.boundingBox.height >= r.y &&
+                this.boundingBox.y <= r.y + r.height &&
+                this.boundingBox.x <= r.x + r.width){
             return true;
         }
         return false;
+
+//        if( r.contains(this.boundingBox) &&
+//                this.boundingBox.contains(r))
+//        {
+//            return true;
+//        }
+//        return false;
     }
 
-    public void tick(){
-        this.boundingBox.setBounds(this.x, this.y, boundingBoxWidth, boundingBoxHeight );
+    public void tick() {
+        this.boundingBox.setBounds(this.x, this.y, boundingBoxWidth, boundingBoxHeight);
 
         //this.x += this.velocity;                          // velocity of player, when used in one direction
 
-        if(movingUp){
+        if (movingUp) {
             this.y -= velocity;
         }
-        if(movingDown){
+        if (movingDown) {
             this.y += velocity;
         }
-        if(movingLeft){
+        if (movingLeft) {
             this.x -= velocity;
         }
-        if(movingRight){
+        if (movingRight) {
             this.x += velocity;
         }
 
     }
 
-    public void render(Graphics g){
+    public void render(Graphics g) {
         g.drawImage(this.playerImage, this.x, this.y, null);
     }
 }
