@@ -1,12 +1,10 @@
-package game;
+package models;
 
 import gfx.Assets;
-
 import java.awt.*;
-
 import java.awt.image.BufferedImage;
 
-public class Player {         // TODO think whether to create class Entity
+public class Old_Player {         // TODO think whether to create class Entity
 
     private static final int velocitySpeed = 3; // Player moves with 2 px left/right/up/down
     private static final int boundingBoxWidth = 95;
@@ -25,7 +23,7 @@ public class Player {         // TODO think whether to create class Entity
     private BufferedImage playerImage;
     private Rectangle boundingBox;                  // used in collisions
 
-    public Player(int x, int y, int health) {
+    public Old_Player(int x, int y, int health) {
         this.x = x;
         this.y = y;
         this.health = health;
