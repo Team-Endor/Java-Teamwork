@@ -1,7 +1,5 @@
 package display;
 
-// Generates the display of the game
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,7 +18,6 @@ public class Display extends Canvas{
         this.title = title;
 
         createFrame();
-
     }
 
     public Canvas getCanvas(){
@@ -49,6 +46,4 @@ public class Display extends Canvas{
         frame.add(canvas);
         frame.pack();                             // creates a new entity
     }
-
-
 }

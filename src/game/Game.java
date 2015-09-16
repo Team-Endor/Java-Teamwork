@@ -3,30 +3,32 @@ package game;
 import display.Display;
 import gfx.Assets;
 import gfx.ImageLoader;
+import models.Player;
+import models.factories.PlayerFactory;
+import physics.CollisionDetector;
 import state.State;
-
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 public class Game implements Runnable {
 
-    private int width;
-    private int height;
+    private int    width;
+    private int    height;
     private String title;
 
-    private Thread thread;
+    private Thread  thread;
     private boolean isRunning;
     private Display display;
 
     private BufferStrategy bs;
-    private Graphics g;
+    private Graphics       g;
 
     private InputHandler ih;
 
-    private State currentState;
-    private Player player;
-    private Rectangle enemy;
+    private State     currentState;
+    private Player    player;
+    private Rectangle enemyRectangle;
 
 
     public Game(String title, int width, int height) {
@@ -38,22 +40,24 @@ public class Game implements Runnable {
 
     public void init() {
         this.display = new Display(this.title, this.width, this.height);
-        this.ih = new InputHandler(this.display);
+
         Assets.init();
+        this.player = PlayerFactory.generatePlayer();
+
+        this.ih = new InputHandler(this.display, this.player);
 
         // this.currentState = StateManager.getCurrentState();      // gets the current state; to set it use: StateManager.setCurrentState(new MenuState());
 
-        this.player = new Player(100, 100, 50);
-        this.enemy = new Rectangle(500, 100, 20, 150);
+        this.enemyRectangle = new Rectangle(500, 100, 20, 150);
     }
 
     private void tick() {
         this.player.tick();
-        if (this.player.intersects(this.enemy)) {
-            this.player.health -= 50;
+        if (CollisionDetector.intersects(this.player.getBoundingBox(), this.enemyRectangle)) {
+            this.player.setHealth(this.player.getHealth() - 50);
         }
 
-        if (this.player.health <= 0) {
+        if (!this.player.isAlive()) {
             System.out.print("You dead, bro!");
             stop();
         }
@@ -78,10 +82,10 @@ public class Game implements Runnable {
         this.player.render(this.g);
         this.g.setColor(Color.red);
         this.g.fillRect(
-                this.enemy.x,
-                this.enemy.y,
-                this.enemy.width,
-                this.enemy.height);
+                this.enemyRectangle.x,
+                this.enemyRectangle.y,
+                this.enemyRectangle.width,
+                this.enemyRectangle.height);
 
         // End drawing
 

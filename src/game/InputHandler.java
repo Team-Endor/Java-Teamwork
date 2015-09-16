@@ -1,15 +1,17 @@
 package game;
 
 import display.Display;
-import javafx.scene.input.KeyCode;
+import models.Player;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class InputHandler implements KeyListener{
+    private Player player;
 
-    public InputHandler(Display display){
+    public InputHandler(Display display, Player player){
         display.getCanvas().addKeyListener(this);
+        this.player = player;
     }
 
     @Override
@@ -17,16 +19,16 @@ public class InputHandler implements KeyListener{
         int keyCode = e.getKeyCode();
 
         if(keyCode == KeyEvent.VK_UP){
-            Player.movingUp = true;
+            this.player.setIsMovingUp(true);
         }
         if(keyCode == KeyEvent.VK_DOWN){
-            Player.movingDown = true;
+            this.player.setIsMovingDown(true);
         }
         if(keyCode == KeyEvent.VK_LEFT){
-            Player.movingLeft = true;
+            this.player.setIsMovingLeft(true);
         }
         if(keyCode == KeyEvent.VK_RIGHT){
-            Player.movingRight = true;
+            this.player.setIsMovingRight(true);
         }
     }
 
@@ -35,16 +37,16 @@ public class InputHandler implements KeyListener{
         int keyCode = e.getKeyCode();
 
         if(keyCode == KeyEvent.VK_UP){
-            Player.movingUp = false;
+            this.player.setIsMovingUp(false);
         }
         if(keyCode == KeyEvent.VK_DOWN){
-            Player.movingDown = false;
+            this.player.setIsMovingDown(false);
         }
         if(keyCode == KeyEvent.VK_LEFT){
-            Player.movingLeft = false;
+            this.player.setIsMovingLeft(false);
         }
         if(keyCode == KeyEvent.VK_RIGHT){
-            Player.movingRight = false;
+            this.player.setIsMovingRight(false);
         }
     }
 
