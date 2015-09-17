@@ -4,6 +4,7 @@ import display.Display;
 import gfx.Assets;
 import gfx.ImageLoader;
 import models.Airplane;
+import models.Background;
 import models.Player;
 import models.factories.AirplaneFactory;
 import models.factories.PlayerFactory;
@@ -29,6 +30,7 @@ public class Game implements Runnable {
     private InputHandler ih;
 
     private State    currentState;
+    private Background background;
     private Player   player;
     private Airplane testAirplane;
 
@@ -41,6 +43,7 @@ public class Game implements Runnable {
         this.display = new Display(this.WINDOW_TITLE, this.WINDOW_WIDTH, this.WINDOW_HEIGHT);
 
         Assets.init();
+        this.background = new Background();
         this.player = PlayerFactory.generatePlayer();
         this.testAirplane = AirplaneFactory.generateAirplane(0, 400);
 
@@ -52,6 +55,7 @@ public class Game implements Runnable {
     }
 
     private void tick() {
+    	this.background.tick();
         this.player.tick();
         this.testAirplane.tick();
         if (CollisionDetector.intersects(this.player.getBoundingBox(), this.testAirplane.getBoundingBox())) {
@@ -75,10 +79,8 @@ public class Game implements Runnable {
         this.g = this.bs.getDrawGraphics();
         this.g.clearRect(0, 0, this.WINDOW_WIDTH, this.WINDOW_HEIGHT);              // clear the last image of the player
 
-        BufferedImage img = ImageLoader.loadImage("/images/Sky.Original.jpg");
-        g.drawImage(img, 0, 0, null);                               // Load Background image
-
         // Begin drawing
+        this.background.render(g);
 
         this.player.render(this.g);
         this.testAirplane.render(this.g);

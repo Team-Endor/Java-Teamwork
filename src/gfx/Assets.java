@@ -12,6 +12,7 @@ public class Assets {
     private static final int AIRPLANE_HEIGHT = 39;
 
     public static BufferedImage playerMeteor, airplane1;        // Every image has to have Field here!
+	public static BufferedImage background;
 
     public static void init() {
         SpriteSheet meteorSheet = new SpriteSheet(ImageLoader.loadImage("/images/asteroids.png"));
@@ -19,5 +20,7 @@ public class Assets {
 
         SpriteSheet airplaneSheet = new SpriteSheet(ImageLoader.loadImage("/images/airplanes-small.png"));
         airplane1 = airplaneSheet.crop(154, 49, AIRPLANE_WIDTH, AIRPLANE_HEIGHT);
+        
+        background = ImageLoader.loadImage("/images/Sky.Original.jpg");
     }
 }
