@@ -1,13 +1,14 @@
 package models;
 
+import display.Display;
+import game.Game;
 import interfaces.Killable;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Player extends MovableObject implements Killable {
     private static Player instance;
-    private int health;
+    private        int    health;
 
     private Player(int x, int y, BufferedImage image, int velocity, int health) {
         super(x, y, image, velocity);
@@ -29,15 +30,33 @@ public class Player extends MovableObject implements Killable {
         return this.getHealth() > 0;
     }
 
-    @Override
-    public void render(Graphics graphics) {
-        graphics.drawImage(this.getImage(), this.getX(), this.getY(), null);
-    }
-
     public static Player createInstance(int x, int y, BufferedImage image, int velocity, int health) {
-        if(instance==null) {
+        if (instance == null) {
             instance = new Player(x, y, image, velocity, health);
         }
         return instance;
+    }
+
+    @Override
+    public void tick() {
+        if (this.isMovingUp()) {
+            this.move(0, -this.getVelocity());
+        }
+
+        if (this.isMovingDown()) {
+            this.move(0, this.getVelocity());
+        }
+
+        if (this.isMovingLeft()) {
+            if (this.getX() >= 0) {
+                this.move(-this.getVelocity(), 0);
+            }
+        }
+
+        if (this.isMovingRight()) {
+            if (this.getX() < Game.WINDOW_WIDTH - this.getImage().getWidth()) {
+                this.move(this.getVelocity(), 0);
+            }
+        }
     }
 }

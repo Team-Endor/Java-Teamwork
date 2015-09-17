@@ -51,5 +51,7 @@ public abstract class Object {
 
     public abstract void tick();
 
-    public abstract void render(Graphics g);
+    public void render(Graphics graphics) {
+        graphics.drawImage(this.getImage(), this.getX(), this.getY(), null);
+    }
 }

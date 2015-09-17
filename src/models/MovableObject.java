@@ -91,9 +91,6 @@ public abstract class MovableObject extends Object implements Movable {
     }
 
     @Override
-    public abstract void render(Graphics g);
-
-    @Override
     public void move(int deltaX, int deltaY) {
         this.setX(this.getX() + deltaX);
         this.setY(this.getY() + deltaY);
