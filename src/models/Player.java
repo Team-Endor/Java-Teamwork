@@ -48,13 +48,13 @@ public class Player extends MovableObject implements Killable {
         }
 
         if (this.isMovingLeft()) {
-            if (this.getX() >= 0) {
+            if (this.getX() - this.getVelocity() >= 0) {
                 this.move(-this.getVelocity(), 0);
             }
         }
 
         if (this.isMovingRight()) {
-            if (this.getX() < Game.WINDOW_WIDTH - this.getImage().getWidth()) {
+            if (this.getX() + this.getVelocity() < Game.WINDOW_WIDTH - this.getImage().getWidth()) {
                 this.move(this.getVelocity(), 0);
             }
         }

@@ -34,7 +34,7 @@ public class Old_Player {         // TODO think whether to create class Entity
         movingRight = false;
         movingUp = false;
 
-        this.playerImage = Assets.player1;
+//        this.playerImage = Assets.player1;
 
         this.boundingBox = new Rectangle(this.x, this.y);
     }

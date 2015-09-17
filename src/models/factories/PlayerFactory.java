@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 public class PlayerFactory {
     private static final int           PLAYER_X        = 100;
     private static final int           PLAYER_Y        = 100;
-    private static final BufferedImage PLAYER_IMAGE    = Assets.player1;
+    private static final BufferedImage PLAYER_IMAGE    = Assets.playerMeteor;
     private static final int           PLAYER_VELOCITY = 10;
     private static final int           PLAYER_HEALTH   = 100;
 
