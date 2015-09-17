@@ -3,7 +3,9 @@ package game;
 import display.Display;
 import gfx.Assets;
 import gfx.ImageLoader;
+import models.Airplane;
 import models.Player;
+import models.factories.AirplaneFactory;
 import models.factories.PlayerFactory;
 import physics.CollisionDetector;
 import state.State;
@@ -13,9 +15,9 @@ import java.awt.image.BufferedImage;
 
 public class Game implements Runnable {
 
-    private int    width;
-    private int    height;
-    private String title;
+    public static final int WINDOW_WIDTH  = 800;
+    public static int WINDOW_HEIGHT = 600;
+    public static String WINDOW_TITLE  = "The Meteor";
 
     private Thread  thread;
     private boolean isRunning;
@@ -26,39 +28,38 @@ public class Game implements Runnable {
 
     private InputHandler ih;
 
-    private State     currentState;
-    private Player    player;
-    private Rectangle enemyRectangle;
+    private State    currentState;
+    private Player   player;
+    private Airplane testAirplane;
 
 
-    public Game(String title, int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.title = title;
+    public Game() {
         this.isRunning = false;
     }
 
     public void init() {
-        this.display = new Display(this.title, this.width, this.height);
+        this.display = new Display(this.WINDOW_TITLE, this.WINDOW_WIDTH, this.WINDOW_HEIGHT);
 
         Assets.init();
         this.player = PlayerFactory.generatePlayer();
+        this.testAirplane = AirplaneFactory.generateAirplane(0, 400);
 
         this.ih = new InputHandler(this.display, this.player);
 
         // this.currentState = StateManager.getCurrentState();      // gets the current state; to set it use: StateManager.setCurrentState(new MenuState());
 
-        this.enemyRectangle = new Rectangle(500, 100, 20, 150);
+//        this.enemyRectangle = new Rectangle(500, 100, 20, 150);
     }
 
     private void tick() {
         this.player.tick();
-        if (CollisionDetector.intersects(this.player.getBoundingBox(), this.enemyRectangle)) {
+        this.testAirplane.tick();
+        if (CollisionDetector.intersects(this.player.getBoundingBox(), this.testAirplane.getBoundingBox())) {
             this.player.setHealth(this.player.getHealth() - 50);
         }
 
         if (!this.player.isAlive()) {
-            System.out.print("You dead, bro!");
+            System.out.print("You died!");
             stop();
         }
     }
@@ -72,20 +73,21 @@ public class Game implements Runnable {
         }
 
         this.g = this.bs.getDrawGraphics();
-        this.g.clearRect(0, 0, this.width, this.height);              // clear the last image of the player
+        this.g.clearRect(0, 0, this.WINDOW_WIDTH, this.WINDOW_HEIGHT);              // clear the last image of the player
 
-        BufferedImage img = ImageLoader.loadImage("/images/sky.jpg");
+        BufferedImage img = ImageLoader.loadImage("/images/Sky.Original.jpg");
         g.drawImage(img, 0, 0, null);                               // Load Background image
 
         // Begin drawing
 
         this.player.render(this.g);
-        this.g.setColor(Color.red);
-        this.g.fillRect(
-                this.enemyRectangle.x,
-                this.enemyRectangle.y,
-                this.enemyRectangle.width,
-                this.enemyRectangle.height);
+        this.testAirplane.render(this.g);
+//        this.g.setColor(Color.red);
+//        this.g.fillRect(
+//                this.enemyRectangle.x,
+//                this.enemyRectangle.y,
+//                this.enemyRectangle.width,
+//                this.enemyRectangle.height);
 
         // End drawing
 
