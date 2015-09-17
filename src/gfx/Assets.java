@@ -21,6 +21,6 @@ public class Assets {
         SpriteSheet airplaneSheet = new SpriteSheet(ImageLoader.loadImage("/images/airplanes-small.png"));
         airplane1 = airplaneSheet.crop(154, 49, AIRPLANE_WIDTH, AIRPLANE_HEIGHT);
         
-        background = ImageLoader.loadImage("/images/Sky.Original.jpg");
+        background = ImageLoader.loadImage("/images/Sky.jpg");
     }
 }
