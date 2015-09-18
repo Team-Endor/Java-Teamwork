@@ -9,6 +9,6 @@ public class Airplane extends MovableObject {
 
     @Override
     public void tick() {
-        this.move(3, -1);
+        this.move(this.getVelocity(), -1);
     }
 }

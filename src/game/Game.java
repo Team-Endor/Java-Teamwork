@@ -2,23 +2,23 @@ package game;
 
 import display.Display;
 import gfx.Assets;
-import gfx.ImageLoader;
 import models.Airplane;
-import models.Background;
+import models.FighterPlane;
+import models.GroundRocket;
 import models.Player;
-import models.factories.AirplaneFactory;
+import models.factories.AirplanesFactory;
+import models.factories.GroundRocketsFactory;
 import models.factories.PlayerFactory;
 import physics.CollisionDetector;
 import state.State;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 public class Game implements Runnable {
 
-    public static final int WINDOW_WIDTH  = 800;
-    public static int WINDOW_HEIGHT = 600;
-    public static String WINDOW_TITLE  = "The Meteor";
+    public static final int    WINDOW_WIDTH  = 800;
+    public static       int    WINDOW_HEIGHT = 600;
+    public static       String WINDOW_TITLE  = "The Meteor";
 
     private Thread  thread;
     private boolean isRunning;
@@ -29,11 +29,13 @@ public class Game implements Runnable {
 
     private InputHandler ih;
 
-    private State    currentState;
-    private Background background;
-    private Player   player;
-    private Airplane testAirplane;
+    private State        currentState;
+    private Background   background;
 
+    private Player       player;
+    private Airplane     testAirplane;
+    private FighterPlane testFighterPlane;
+    private GroundRocket testGroundRocketFromLeft, testGroundRocketFromCenter, testGroundRocketFromRight;
 
     public Game() {
         this.isRunning = false;
@@ -45,7 +47,11 @@ public class Game implements Runnable {
         Assets.init();
         this.background = new Background();
         this.player = PlayerFactory.generatePlayer();
-        this.testAirplane = AirplaneFactory.generateAirplane(0, 400);
+        this.testAirplane = AirplanesFactory.generateAirplane(0, 400);
+        this.testFighterPlane = AirplanesFactory.generateFighterPlane(800, 200);
+        this.testGroundRocketFromLeft = GroundRocketsFactory.generateGroundRocket(GroundRocket.Position.FromLeft);
+        this.testGroundRocketFromCenter = GroundRocketsFactory.generateGroundRocket(GroundRocket.Position.FromCenter);
+        this.testGroundRocketFromRight = GroundRocketsFactory.generateGroundRocket(GroundRocket.Position.FromRight);
 
         this.ih = new InputHandler(this.display, this.player);
 
@@ -55,9 +61,15 @@ public class Game implements Runnable {
     }
 
     private void tick() {
-    	this.background.tick();
+        this.background.tick();
+
         this.player.tick();
         this.testAirplane.tick();
+        this.testFighterPlane.tick();
+        this.testGroundRocketFromLeft.tick();
+        this.testGroundRocketFromCenter.tick();
+        this.testGroundRocketFromRight.tick();
+
         if (CollisionDetector.intersects(this.player.getBoundingBox(), this.testAirplane.getBoundingBox())) {
             this.player.setHealth(this.player.getHealth() - 50);
         }
@@ -84,6 +96,10 @@ public class Game implements Runnable {
 
         this.player.render(this.g);
         this.testAirplane.render(this.g);
+        this.testFighterPlane.render(this.g);
+        this.testGroundRocketFromLeft.render(this.g);
+        this.testGroundRocketFromCenter.render(this.g);
+        this.testGroundRocketFromRight.render(this.g);
 //        this.g.setColor(Color.red);
 //        this.g.fillRect(
 //                this.enemyRectangle.x,
