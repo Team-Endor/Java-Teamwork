@@ -35,7 +35,7 @@ public abstract class Object {
         return this.image;
     }
 
-    private void setImage(BufferedImage image) {
+    protected void setImage(BufferedImage image) {
         this.image = image;
     }
 

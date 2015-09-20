@@ -34,12 +34,12 @@ public class Display extends Canvas{
         frame.setLocationRelativeTo(null);        // makes frame in the centre of the monitor
         frame.setFocusable(true);                 // clicking ot the frame gives it a focus
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // closes the game, not to run in background when exited
+        frame.requestFocus();
 
         canvas = new Canvas();
 
         // Canvas settings:
         canvas.setPreferredSize(new Dimension(this.width, this.height)); // setPreferredSize only works with Dimension class
-        // TODO: Change if necessary resizing!!!
         canvas.setMaximumSize(new Dimension(this.width, this.height));   // this it to insure Canvas will be in the Frame
         canvas.setMinimumSize(new Dimension(this.width, this.height));   // this it to insure Canvas will be in the Frame
 

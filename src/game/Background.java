@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Background {
-	private static final int VELOCITY = 5;
 	
 	private int x;
 	private int y;
@@ -22,7 +21,7 @@ public class Background {
 	}
 	
 	public void tick() {
-		this.y -= VELOCITY;
+		this.y -= Game.VELOCITY;
 		if (this.y < 0) {
 			this.y = this.backgroundImage.getHeight();
 		}

@@ -2,23 +2,27 @@ package game;
 
 import display.Display;
 import gfx.Assets;
-import models.Airplane;
-import models.FighterPlane;
-import models.GroundRocket;
-import models.Player;
+import models.*;
 import models.factories.AirplanesFactory;
+import models.factories.ExplosionsFactory;
 import models.factories.GroundRocketsFactory;
 import models.factories.PlayerFactory;
 import physics.CollisionDetector;
 import state.State;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.*;
+import java.util.List;
 
 public class Game implements Runnable {
 
     public static final int    WINDOW_WIDTH  = 800;
     public static       int    WINDOW_HEIGHT = 600;
     public static       String WINDOW_TITLE  = "The Meteor";
+
+    public static int VELOCITY = 5;
 
     private Thread  thread;
     private boolean isRunning;
@@ -33,7 +37,8 @@ public class Game implements Runnable {
     private Background   background;
 
     private Player       player;
-    private Airplane     testAirplane;
+    private List<Explosion> explosions;
+    private List<Airplane> airplanes;
     private FighterPlane testFighterPlane;
     private GroundRocket testGroundRocketFromLeft, testGroundRocketFromCenter, testGroundRocketFromRight;
 
@@ -45,15 +50,20 @@ public class Game implements Runnable {
         this.display = new Display(this.WINDOW_TITLE, this.WINDOW_WIDTH, this.WINDOW_HEIGHT);
 
         Assets.init();
+        this.explosions = new ArrayList<>();
         this.background = new Background();
         this.player = PlayerFactory.generatePlayer();
-        this.testAirplane = AirplanesFactory.generateAirplane(0, 400);
-        this.testFighterPlane = AirplanesFactory.generateFighterPlane(800, 200);
+        this.airplanes = new ArrayList<>();
+        this.airplanes.add(AirplanesFactory.generateAirplane());
+        this.airplanes.add(AirplanesFactory.generateFighterPlane());
         this.testGroundRocketFromLeft = GroundRocketsFactory.generateGroundRocket(GroundRocket.Position.FromLeft);
         this.testGroundRocketFromCenter = GroundRocketsFactory.generateGroundRocket(GroundRocket.Position.FromCenter);
         this.testGroundRocketFromRight = GroundRocketsFactory.generateGroundRocket(GroundRocket.Position.FromRight);
 
         this.ih = new InputHandler(this.display, this.player);
+        this.display.getCanvas().addKeyListener(ih);
+
+
 
         // this.currentState = StateManager.getCurrentState();      // gets the current state; to set it use: StateManager.setCurrentState(new MenuState());
 
@@ -63,18 +73,38 @@ public class Game implements Runnable {
     private void tick() {
         this.background.tick();
 
+        List<Explosion> explosionsToRemove = new ArrayList<>();
+        for (Explosion explosion : explosions) {
+            explosion.tick();
+            if(!explosion.getIsAlive()){
+                explosionsToRemove.add(explosion);
+            }
+        }
+        explosions.removeAll(explosionsToRemove);
+
+        List<Airplane> airplanesToRemove = new ArrayList<>();
+        for (Airplane airplane : airplanes) {
+            airplane.tick();
+
+            if (CollisionDetector.intersects(this.player.getBoundingBox(), airplane.getBoundingBox())) {
+                this.player.setHealth(this.player.getHealth() - 25);
+                System.out.println(this.player.getHealth());
+                this.explosions.add(ExplosionsFactory.createExplosion(airplane.getX(), airplane.getY()));
+                airplane.setIsAlive(false);
+            }
+
+            if(!airplane.getIsAlive()){
+                airplanesToRemove.add(airplane);
+            }
+        }
+        airplanes.removeAll(airplanesToRemove);
+
         this.player.tick();
-        this.testAirplane.tick();
-        this.testFighterPlane.tick();
         this.testGroundRocketFromLeft.tick();
         this.testGroundRocketFromCenter.tick();
         this.testGroundRocketFromRight.tick();
 
-        if (CollisionDetector.intersects(this.player.getBoundingBox(), this.testAirplane.getBoundingBox())) {
-            this.player.setHealth(this.player.getHealth() - 50);
-        }
-
-        if (!this.player.isAlive()) {
+        if (!this.player.getIsAlive()) {
             System.out.print("You died!");
             stop();
         }
@@ -94,9 +124,15 @@ public class Game implements Runnable {
         // Begin drawing
         this.background.render(g);
 
+        for (Explosion explosion : explosions) {
+            explosion.render(this.g);
+        }
+
+        for (Airplane airplane:airplanes) {
+            airplane.render(this.g);
+        }
+
         this.player.render(this.g);
-        this.testAirplane.render(this.g);
-        this.testFighterPlane.render(this.g);
         this.testGroundRocketFromLeft.render(this.g);
         this.testGroundRocketFromCenter.render(this.g);
         this.testGroundRocketFromRight.render(this.g);
@@ -116,6 +152,7 @@ public class Game implements Runnable {
     @Override
     public void run() {
         init();
+        this.display.getCanvas().requestFocus();
 
         // we make settings, so the "ticks" are equal in time on all computers/ processors
 
