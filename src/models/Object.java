@@ -40,8 +40,7 @@ public abstract class Object {
     }
 
     public Rectangle getBoundingBox() {
-        Rectangle currentBoundingBox = new Rectangle(
-                this.getX(),
+        Rectangle currentBoundingBox = new Rectangle(this.getX(),
                 this.getY(),
                 this.getImage().getWidth(),
                 this.getImage().getHeight());

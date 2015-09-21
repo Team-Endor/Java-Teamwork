@@ -2,10 +2,10 @@ package state;
 
 import com.sun.prism.Graphics;
 
-public class MenuState extends State{
+public class MenuState extends State {
 
 
-    public MenuState(){
+    public MenuState() {
         // TODO implement MenuState
     }
 

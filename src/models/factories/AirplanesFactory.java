@@ -2,7 +2,6 @@ package models.factories;
 
 import game.Game;
 import gfx.Assets;
-import models.Airplane;
 import models.FighterPlane;
 import models.PassangerPlane;
 
@@ -12,27 +11,57 @@ import java.util.Random;
 public class AirplanesFactory {
     private static Random random = new Random();
 
-    private static final int AIRPLANE_WIDTH = 150;
+    private static final int AIRPLANE_WIDTH  = 150;
     private static final int AIRPLANE_HEIGHT = 40;
 
-    private static final int FIGHTERPLANE_WIDTH = 105;
+    private static final int FIGHTERPLANE_WIDTH  = 105;
     private static final int FIGHTERPLANE_HEIGHT = 27;
 
-    private static final BufferedImage AIRPLANE1LEFT_IMAGE = Assets.Airplanes.crop(0, 0, AIRPLANE_WIDTH, AIRPLANE_HEIGHT);
-    private static final BufferedImage AIRPLANE2LEFT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH, 0, AIRPLANE_WIDTH, AIRPLANE_HEIGHT);
-    private static final BufferedImage AIRPLANE3LEFT_IMAGE = Assets.Airplanes.crop(0, AIRPLANE_HEIGHT, AIRPLANE_WIDTH, AIRPLANE_HEIGHT);
-    private static final BufferedImage AIRPLANE4LEFT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH, AIRPLANE_HEIGHT, AIRPLANE_WIDTH, AIRPLANE_HEIGHT);
+    private static final BufferedImage AIRPLANE1LEFT_IMAGE = Assets.Airplanes.crop(0,
+            0,
+            AIRPLANE_WIDTH,
+            AIRPLANE_HEIGHT);
+    private static final BufferedImage AIRPLANE2LEFT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH,
+            0,
+            AIRPLANE_WIDTH,
+            AIRPLANE_HEIGHT);
+    private static final BufferedImage AIRPLANE3LEFT_IMAGE = Assets.Airplanes.crop(0,
+            AIRPLANE_HEIGHT,
+            AIRPLANE_WIDTH,
+            AIRPLANE_HEIGHT);
+    private static final BufferedImage AIRPLANE4LEFT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH,
+            AIRPLANE_HEIGHT,
+            AIRPLANE_WIDTH,
+            AIRPLANE_HEIGHT);
 
-    private static final BufferedImage AIRPLANE1RIGHT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH * 2, 0, AIRPLANE_WIDTH, AIRPLANE_HEIGHT);
-    private static final BufferedImage AIRPLANE2RIGHT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH * 3, 0, AIRPLANE_WIDTH, AIRPLANE_HEIGHT);
-    private static final BufferedImage AIRPLANE3RIGHT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH * 2, AIRPLANE_HEIGHT, AIRPLANE_WIDTH, AIRPLANE_HEIGHT);
-    private static final BufferedImage AIRPLANE4RIGHT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH * 3, AIRPLANE_HEIGHT, AIRPLANE_WIDTH, AIRPLANE_HEIGHT);
+    private static final BufferedImage AIRPLANE1RIGHT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH * 2,
+            0,
+            AIRPLANE_WIDTH,
+            AIRPLANE_HEIGHT);
+    private static final BufferedImage AIRPLANE2RIGHT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH * 3,
+            0,
+            AIRPLANE_WIDTH,
+            AIRPLANE_HEIGHT);
+    private static final BufferedImage AIRPLANE3RIGHT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH * 2,
+            AIRPLANE_HEIGHT,
+            AIRPLANE_WIDTH,
+            AIRPLANE_HEIGHT);
+    private static final BufferedImage AIRPLANE4RIGHT_IMAGE = Assets.Airplanes.crop(AIRPLANE_WIDTH * 3,
+            AIRPLANE_HEIGHT,
+            AIRPLANE_WIDTH,
+            AIRPLANE_HEIGHT);
 
     private static final int AIRPLANE_VELOCITY = 3;
 
-    private static final BufferedImage FIGHTER_PLANE_LEFT_IMAGE = Assets.FighterPlane.crop(0, 0, FIGHTERPLANE_WIDTH, FIGHTERPLANE_HEIGHT);
-    private static final BufferedImage FIGHTER_PLANE_RIGHT_IMAGE = Assets.FighterPlane.crop(FIGHTERPLANE_WIDTH, 0, FIGHTERPLANE_WIDTH, FIGHTERPLANE_HEIGHT);
-    private static final int FIGHTER_PLANE_VELOCITY = 12;
+    private static final BufferedImage FIGHTER_PLANE_LEFT_IMAGE  = Assets.FighterPlane.crop(0,
+            0,
+            FIGHTERPLANE_WIDTH,
+            FIGHTERPLANE_HEIGHT);
+    private static final BufferedImage FIGHTER_PLANE_RIGHT_IMAGE = Assets.FighterPlane.crop(FIGHTERPLANE_WIDTH,
+            0,
+            FIGHTERPLANE_WIDTH,
+            FIGHTERPLANE_HEIGHT);
+    private static final int           FIGHTER_PLANE_VELOCITY    = 12;
 
     public static PassangerPlane generateAirplane() {
         int x = random.nextInt(Game.WINDOW_WIDTH);

@@ -137,8 +137,7 @@ public class Game implements Runnable {
 
         int healthBarWidth = 690;
         int healthBarBottomOffset = 40;
-        HealthBar.DrawHealthBar(
-                this.player,
+        HealthBar.DrawHealthBar(this.player,
                 healthBarWidth,
                 this.g,
                 (WINDOW_WIDTH - healthBarWidth) / 2,

@@ -5,11 +5,12 @@ import models.Player;
 import java.awt.*;
 
 public class HealthBar {
-    public static void DrawHealthBar(Player player, int totalBarLength, Graphics graphics, int positionX, int positionY) {
+    public static void DrawHealthBar(Player player, int totalBarLength, Graphics graphics, int positionX, int
+            positionY) {
         //start drawing health bar frame
         graphics.drawImage(Assets.healthBarSeparator, positionX, positionY, null);
 
-        for(int i = 0; i <= totalBarLength; i++){
+        for (int i = 0; i <= totalBarLength; i++) {
             graphics.drawImage(Assets.healthBarFrame, positionX + i, positionY, null);
         }
 

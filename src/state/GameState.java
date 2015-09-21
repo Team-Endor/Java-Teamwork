@@ -2,9 +2,9 @@ package state;
 
 import com.sun.prism.Graphics;
 
-public class GameState extends State{
+public class GameState extends State {
 
-    public GameState(){
+    public GameState() {
         // TODO implement GameState
     }
 

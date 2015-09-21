@@ -3,10 +3,10 @@ package display;
 import javax.swing.*;
 import java.awt.*;
 
-public class Display extends Canvas{
+public class Display extends Canvas {
 
-    private int width;
-    private int height;
+    private int    width;
+    private int    height;
     private String title;
 
     private JFrame frame;     // Property frame of the game. The Canvas will wi inside.
@@ -20,7 +20,7 @@ public class Display extends Canvas{
         createFrame();
     }
 
-    public Canvas getCanvas(){
+    public Canvas getCanvas() {
         return this.canvas;
     }
 

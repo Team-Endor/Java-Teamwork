@@ -6,14 +6,14 @@ import interfaces.Killable;
 
 import java.awt.image.BufferedImage;
 
-public class Player extends MovableObject implements Killable{
-    private boolean isAlive;
-    private static Player instance;
-    private int health;
-    private int totalHealth;
-    private static final int METEOR_WIDTH = 80;
-    private static final int METEOR_HEIGHT = 110;
-    private static int animationFrame = 0;
+public class Player extends MovableObject implements Killable {
+    private        boolean isAlive;
+    private static Player  instance;
+    private        int     health;
+    private        int     totalHealth;
+    private static final int METEOR_WIDTH   = 80;
+    private static final int METEOR_HEIGHT  = 110;
+    private static       int animationFrame = 0;
 
     private Player(int x, int y, BufferedImage image, int velocity, int totalHealth) {
         super(x, y, image, velocity);
@@ -49,13 +49,13 @@ public class Player extends MovableObject implements Killable{
     @Override
     public void tick() {
 
-        if(animationFrame < 5){
+        if (animationFrame < 5) {
             this.setImage(Assets.Meteor.crop(0, 0, METEOR_WIDTH, METEOR_HEIGHT));
-        }else{
+        } else {
             this.setImage(Assets.Meteor.crop(METEOR_WIDTH, 0, METEOR_WIDTH, METEOR_HEIGHT));
         }
         animationFrame++;
-        if(animationFrame == 10){
+        if (animationFrame == 10) {
             animationFrame = 0;
         }
 

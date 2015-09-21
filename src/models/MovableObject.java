@@ -3,7 +3,6 @@ package models;
 import game.Game;
 import interfaces.Movable;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public abstract class MovableObject extends Object implements Movable {
@@ -75,19 +74,19 @@ public abstract class MovableObject extends Object implements Movable {
     @Override
     public void tick() {
         if (this.isMovingUp()) {
-            this.move(-Game.VELOCITY/2, -this.getVelocity());
+            this.move(-Game.VELOCITY / 2, -this.getVelocity());
         }
 
         if (this.isMovingDown()) {
-            this.move(-Game.VELOCITY/2, this.getVelocity());
+            this.move(-Game.VELOCITY / 2, this.getVelocity());
         }
 
         if (this.isMovingLeft()) {
-            this.move(-this.getVelocity(), -Game.VELOCITY/2);
+            this.move(-this.getVelocity(), -Game.VELOCITY / 2);
         }
 
         if (this.isMovingRight()) {
-            this.move(this.getVelocity(), -Game.VELOCITY/2);
+            this.move(this.getVelocity(), -Game.VELOCITY / 2);
         }
     }
 

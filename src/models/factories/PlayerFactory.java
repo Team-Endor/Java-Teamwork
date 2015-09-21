@@ -1,18 +1,17 @@
 package models.factories;
 
 import gfx.Assets;
-import gfx.SpriteSheet;
 import models.Player;
 
 import java.awt.image.BufferedImage;
 
 public class PlayerFactory {
-    private static final int METEOR_WIDTH    = 80;
-    private static final int METEOR_HEIGHT   = 110;
+    private static final int METEOR_WIDTH  = 80;
+    private static final int METEOR_HEIGHT = 110;
 
     private static final int           PLAYER_X        = 370;
     private static final int           PLAYER_Y        = 100;
-    private static final BufferedImage PLAYER_IMAGE    = Assets.Meteor.crop(0,0,METEOR_WIDTH,METEOR_HEIGHT);
+    private static final BufferedImage PLAYER_IMAGE    = Assets.Meteor.crop(0, 0, METEOR_WIDTH, METEOR_HEIGHT);
     private static final int           PLAYER_VELOCITY = 10;
     private static final int           PLAYER_HEALTH   = 100;
 

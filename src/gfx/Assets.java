@@ -8,10 +8,10 @@ import java.awt.image.BufferedImage;
 
 public class Assets {
 
-    public static SpriteSheet Meteor;      // Every image has to have Field here!
-    public static SpriteSheet Explosion;
-    public static SpriteSheet Airplanes;
-    public static SpriteSheet FighterPlane;
+    public static SpriteSheet   Meteor;      // Every image has to have Field here!
+    public static SpriteSheet   Explosion;
+    public static SpriteSheet   Airplanes;
+    public static SpriteSheet   FighterPlane;
     public static BufferedImage background;
     public static BufferedImage groundRocketFromLeft, groundRocketFromRight, groundRocketFromCenter;
     public static BufferedImage healthBarSeparator, healthBarFrame, healthBarFiller;

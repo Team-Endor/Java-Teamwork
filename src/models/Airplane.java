@@ -4,7 +4,7 @@ import interfaces.Killable;
 
 import java.awt.image.BufferedImage;
 
-public abstract class Airplane extends MovableObject implements Killable{
+public abstract class Airplane extends MovableObject implements Killable {
     private boolean isAlive;
 
     protected Airplane(int x, int y, BufferedImage image, int velocity) {
