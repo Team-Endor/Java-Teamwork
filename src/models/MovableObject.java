@@ -1,5 +1,6 @@
 package models;
 
+import game.Game;
 import interfaces.Movable;
 
 import java.awt.*;
@@ -74,19 +75,19 @@ public abstract class MovableObject extends Object implements Movable {
     @Override
     public void tick() {
         if (this.isMovingUp()) {
-            this.move(-1, -this.getVelocity());
+            this.move(-Game.VELOCITY/2, -this.getVelocity());
         }
 
         if (this.isMovingDown()) {
-            this.move(-1, this.getVelocity());
+            this.move(-Game.VELOCITY/2, this.getVelocity());
         }
 
         if (this.isMovingLeft()) {
-            this.move(-this.getVelocity(), -1);
+            this.move(-this.getVelocity(), -Game.VELOCITY/2);
         }
 
         if (this.isMovingRight()) {
-            this.move(this.getVelocity(), -1);
+            this.move(this.getVelocity(), -Game.VELOCITY/2);
         }
     }
 
@@ -94,5 +95,12 @@ public abstract class MovableObject extends Object implements Movable {
     public void move(int deltaX, int deltaY) {
         this.setX(this.getX() + deltaX);
         this.setY(this.getY() + deltaY);
+    }
+
+    public boolean isOnScreen() {
+        return this.getX() + this.getImage().getWidth() > 0 &&
+                this.getX() < Game.WINDOW_WIDTH &&
+                this.getY() + this.getImage().getHeight() > 0 &&
+                this.getY() < Game.WINDOW_HEIGHT;
     }
 }

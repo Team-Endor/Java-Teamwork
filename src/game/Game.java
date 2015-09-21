@@ -20,7 +20,7 @@ public class Game implements Runnable {
 
     public static final int    WINDOW_WIDTH  = 800;
     public static       int    WINDOW_HEIGHT = 600;
-    public static       String WINDOW_TITLE  = "The Meteor";
+    public static       String WINDOW_TITLE  = "Team Endor Java Teamwork - The Meteor";
 
     public static int VELOCITY = 5;
 
@@ -33,14 +33,14 @@ public class Game implements Runnable {
 
     private InputHandler ih;
 
-    private State        currentState;
-    private Background   background;
+    private State      currentState;
+    private Background background;
 
-    private Player       player;
+    private Player          player;
     private List<Explosion> explosions;
-    private List<Airplane> airplanes;
-    private FighterPlane testFighterPlane;
-    private GroundRocket testGroundRocketFromLeft, testGroundRocketFromCenter, testGroundRocketFromRight;
+    private List<Airplane>  airplanes;
+    private FighterPlane    testFighterPlane;
+    private GroundRocket    testGroundRocketFromLeft, testGroundRocketFromCenter, testGroundRocketFromRight;
 
     public Game() {
         this.isRunning = false;
@@ -63,8 +63,6 @@ public class Game implements Runnable {
         this.ih = new InputHandler(this.display, this.player);
         this.display.getCanvas().addKeyListener(ih);
 
-
-
         // this.currentState = StateManager.getCurrentState();      // gets the current state; to set it use: StateManager.setCurrentState(new MenuState());
 
 //        this.enemyRectangle = new Rectangle(500, 100, 20, 150);
@@ -76,7 +74,7 @@ public class Game implements Runnable {
         List<Explosion> explosionsToRemove = new ArrayList<>();
         for (Explosion explosion : explosions) {
             explosion.tick();
-            if(!explosion.getIsAlive()){
+            if (!explosion.getIsAlive()) {
                 explosionsToRemove.add(explosion);
             }
         }
@@ -93,7 +91,7 @@ public class Game implements Runnable {
                 airplane.setIsAlive(false);
             }
 
-            if(!airplane.getIsAlive()){
+            if (!airplane.getIsAlive() || !airplane.isOnScreen()) {
                 airplanesToRemove.add(airplane);
             }
         }
@@ -137,9 +135,14 @@ public class Game implements Runnable {
         this.testGroundRocketFromCenter.render(this.g);
         this.testGroundRocketFromRight.render(this.g);
 
-        int healthBarWidth = 692;
+        int healthBarWidth = 690;
         int healthBarBottomOffset = 40;
-        HealthBar.DrawHealthBar(this.player, healthBarWidth, this.g, (WINDOW_WIDTH - healthBarWidth) / 2 , WINDOW_HEIGHT - healthBarBottomOffset);
+        HealthBar.DrawHealthBar(
+                this.player,
+                healthBarWidth,
+                this.g,
+                (WINDOW_WIDTH - healthBarWidth) / 2,
+                WINDOW_HEIGHT - healthBarBottomOffset);
 
 //        this.g.setColor(Color.red);
 //        this.g.fillRect(
