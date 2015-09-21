@@ -74,19 +74,19 @@ public abstract class MovableObject extends Object implements Movable {
     @Override
     public void tick() {
         if (this.isMovingUp()) {
-            this.move(0, -this.getVelocity());
+            this.move(-1, -this.getVelocity());
         }
 
         if (this.isMovingDown()) {
-            this.move(0, this.getVelocity());
+            this.move(-1, this.getVelocity());
         }
 
         if (this.isMovingLeft()) {
-            this.move(-this.getVelocity(), 0);
+            this.move(-this.getVelocity(), -1);
         }
 
         if (this.isMovingRight()) {
-            this.move(this.getVelocity(), 0);
+            this.move(this.getVelocity(), -1);
         }
     }
 

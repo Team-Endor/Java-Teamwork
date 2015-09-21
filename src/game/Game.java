@@ -2,6 +2,7 @@ package game;
 
 import display.Display;
 import gfx.Assets;
+import gfx.HealthBar;
 import models.*;
 import models.factories.AirplanesFactory;
 import models.factories.ExplosionsFactory;
@@ -10,7 +11,6 @@ import models.factories.PlayerFactory;
 import physics.CollisionDetector;
 import state.State;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.*;
@@ -87,8 +87,8 @@ public class Game implements Runnable {
             airplane.tick();
 
             if (CollisionDetector.intersects(this.player.getBoundingBox(), airplane.getBoundingBox())) {
-                this.player.setHealth(this.player.getHealth() - 25);
-                System.out.println(this.player.getHealth());
+                this.player.setCurrentHealth(this.player.getCurrentHealth() - 25);
+                System.out.println(this.player.getCurrentHealth());
                 this.explosions.add(ExplosionsFactory.createExplosion(airplane.getX(), airplane.getY()));
                 airplane.setIsAlive(false);
             }
@@ -128,7 +128,7 @@ public class Game implements Runnable {
             explosion.render(this.g);
         }
 
-        for (Airplane airplane:airplanes) {
+        for (Airplane airplane : airplanes) {
             airplane.render(this.g);
         }
 
@@ -136,6 +136,11 @@ public class Game implements Runnable {
         this.testGroundRocketFromLeft.render(this.g);
         this.testGroundRocketFromCenter.render(this.g);
         this.testGroundRocketFromRight.render(this.g);
+
+        int healthBarWidth = 692;
+        int healthBarBottomOffset = 40;
+        HealthBar.DrawHealthBar(this.player, healthBarWidth, this.g, (WINDOW_WIDTH - healthBarWidth) / 2 , WINDOW_HEIGHT - healthBarBottomOffset);
+
 //        this.g.setColor(Color.red);
 //        this.g.fillRect(
 //                this.enemyRectangle.x,

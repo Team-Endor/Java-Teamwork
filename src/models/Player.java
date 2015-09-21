@@ -1,36 +1,43 @@
 package models;
 
-import display.Display;
 import game.Game;
 import gfx.Assets;
 import interfaces.Killable;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Player extends MovableObject implements Killable{
     private boolean isAlive;
     private static Player instance;
     private int health;
+    private int totalHealth;
     private static final int METEOR_WIDTH = 80;
     private static final int METEOR_HEIGHT = 110;
     private static int animationFrame = 0;
 
-    private Player(int x, int y, BufferedImage image, int velocity, int health) {
+    private Player(int x, int y, BufferedImage image, int velocity, int totalHealth) {
         super(x, y, image, velocity);
 
-        this.setHealth(health);
+        this.setTotalHealth(totalHealth);
+        this.setCurrentHealth(totalHealth);
         this.isAlive = true;
     }
 
-    public int getHealth() {
+    public int getCurrentHealth() {
         return this.health;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public void setCurrentHealth(int currentHealth) {
+        this.health = currentHealth;
     }
 
+    public int getTotalHealth() {
+        return this.totalHealth;
+    }
+
+    public void setTotalHealth(int totalHealth) {
+        this.totalHealth = totalHealth;
+    }
 
     public static Player createInstance(int x, int y, BufferedImage image, int velocity, int health) {
         if (instance == null) {
