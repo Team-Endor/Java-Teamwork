@@ -60,7 +60,9 @@ public class Player extends MovableObject implements Killable {
         }
 
         if (this.isMovingUp()) {
-            this.move(0, -this.getVelocity());
+            if(this.getY() > 0) {
+                this.move(0, -this.getVelocity());
+            }
         }
 
         if (this.isMovingDown()) {
