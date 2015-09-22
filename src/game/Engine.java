@@ -5,7 +5,6 @@ import gfx.Assets;
 import state.State;
 import state.StateManager;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
@@ -32,6 +31,10 @@ public class Engine implements Runnable {
         return this.display;
     }
 
+    public void setIsRunning(boolean isRunning) {
+        this.isRunning = isRunning;
+    }
+
     private void init() {
         this.display = new Display(this.WINDOW_TITLE, this.WINDOW_WIDTH, this.WINDOW_HEIGHT);
         this.bufferStrategy = display.getCanvas().getBufferStrategy();
@@ -53,7 +56,6 @@ public class Engine implements Runnable {
     }
 
     private void render() {
-
 
         this.graphics = this.bufferStrategy.getDrawGraphics();
         // clear the last image of the player
@@ -84,12 +86,14 @@ public class Engine implements Runnable {
             lastTimeTicked = now;
 
             if (deltaTime >= 1) {
-                tick();
-                render();
+                this.tick();
+                this.render();
                 deltaTime--;
             }
         }
 
+        this.stop();
+        this.display.getFrame().dispose();
     }
 
     public synchronized void start() {
@@ -109,7 +113,6 @@ public class Engine implements Runnable {
 
         try {
             this.thread.join();
-            this.display.getFrame().dispose();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

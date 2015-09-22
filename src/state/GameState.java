@@ -17,13 +17,15 @@ import java.util.List;
 import java.util.Random;
 
 public class GameState extends State {
-	private static final int BACKGROUND_SPEED = 10;
+	private static final int BACKGROUND_SPEED  = 10;
 	private static final int MAX_ENEMIES_COUNT = 5;
-	private static final int MIN_SPAWN_TIME = 20;
-	private static final int SPAWN_INTERVAL = 20;
+	private static final int MIN_SPAWN_TIME    = 20;
+	private static final int SPAWN_INTERVAL    = 20;
 
-	public static final int BOARD_WIDTH = 800;
+	public static final int BOARD_WIDTH  = 800;
 	public static final int BOARD_HEIGHT = 600;
+
+	private boolean isPaused;
 
 	private static final Random random = new Random();
 
@@ -31,19 +33,18 @@ public class GameState extends State {
 
 	private int nextEnemyTimer = 0;
 
-	private double Velocity = 5;
-	private int VelocityINT = 5;
-	private int DistanceTraveled = 1;
+	private double Velocity         = 5;
+	private int    VelocityINT      = 5;
+	private int    DistanceTraveled = 1;
 
 	private ChangingBackground background;
-	private HealthBar healthBar;
+	private HealthBar          healthBar;
 
 	private static Player player;
 
 	private List<Explosion> explosions;
-	private List<Enemy> enemies;
-
 	private List<Explosion> explosionsToRemove;
+	private List<Enemy>     enemies;
 
 	public GameState(StateManager stateManager) {
 		this.stateManager = stateManager;
@@ -54,10 +55,19 @@ public class GameState extends State {
 		return player;
 	}
 
+    public boolean getIsPaused() {
+        return isPaused;
+    }
+
+    public void setIsPaused(boolean isPaused) {
+        this.isPaused = isPaused;
+    }
+
 	public void init() {
 		this.background = new ChangingBackground();// Assets.background);
 		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpace, 2, BACKGROUND_SPEED));
-		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpaceAtmosphere, 1, BACKGROUND_SPEED));
+		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpaceAtmosphere, 1,
+				BACKGROUND_SPEED));
 		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundAtmosphere, 4, BACKGROUND_SPEED));
 		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundGround, 1, BACKGROUND_SPEED));
 
@@ -72,7 +82,7 @@ public class GameState extends State {
 
 	@Override
 	public void tick() {
-
+        if (!getIsPaused()) {
 		/*
 		 * if (this.DistanceTraveled < 50000000) { int rand =
 		 * random.nextInt(100); if (rand == 0 || rand == 1) {
@@ -80,42 +90,43 @@ public class GameState extends State {
 		 * 5) { this.enemies.add(AirplanesFactory.generateFighterPlane()); } }
 		 */
 
-		this.background.tick();// this.VelocityINT);
+            this.background.tick();// this.VelocityINT);
 
-		explosionsToRemove.clear();
-		for (Explosion explosion : explosions) {
-			explosion.tick(this.VelocityINT);
-			if (!explosion.getIsAlive()) {
-				explosionsToRemove.add(explosion);
-			}
-		}
-		if (explosionsToRemove.size() > 0) {
-			explosions.removeAll(explosionsToRemove);
-		}
+            explosionsToRemove.clear();
+            for (Explosion explosion : explosions) {
+                explosion.tick(this.VelocityINT);
+                if (!explosion.getIsAlive()) {
+                    explosionsToRemove.add(explosion);
+                }
+            }
+            if (explosionsToRemove.size() > 0) {
+                explosions.removeAll(explosionsToRemove);
+            }
 
-		this.processCollision();
+            this.processCollision();
 
-		this.removeDestoyedEnemies();
+            this.removeDestoyedEnemies();
 
-		this.spawnEnemy();
+            this.spawnEnemy();
 
-		this.player.tick((int) this.Velocity);
+            this.player.tick((int) this.Velocity);
 
-		this.healthBar.tick(this.VelocityINT);
+            this.healthBar.tick(this.VelocityINT);
 
-		if (!this.player.getIsAlive()) {
-			this.stateManager.setCurrentState(this.stateManager.getGameOverState());
-		}
+            if (!this.player.getIsAlive()) {
+                this.stateManager.setCurrentState(this.stateManager.getGameOverState());
+            }
 
-		if (this.background.isFinnished()) {
-			// victory
-			System.out.println("Victory");
-		}
+            if (this.background.isFinnished()) {
+                // victory
+                System.out.println("Victory");
+            }
 
-		this.Velocity += 0.01;
-		this.VelocityINT = (int) Velocity;
-		this.DistanceTraveled += this.VelocityINT;
-	}
+            this.Velocity += 0.01;
+            this.VelocityINT = (int) Velocity;
+            this.DistanceTraveled += this.VelocityINT;
+        }
+    }
 
 	@Override
 	public void render(Graphics graphics) {

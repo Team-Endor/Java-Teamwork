@@ -15,9 +15,10 @@ public class StateManager {
 
     private Engine engine;
 
-    private GameState gameState;
-    private MenuState menuState;
+    private GameState     gameState;
+    private MenuState     menuState;
     private GameOverState gameOverState;
+    private ExitGameState exitGameState;
 
     private GameStateInputHandler gameStateInputHandler;
     private MenuStateInputHandler menuStateInputHandler;
@@ -28,20 +29,26 @@ public class StateManager {
         this.engine = engine;
 
         this.gameState = new GameState(this);
-        this.menuState = new MenuState(this);
+        this.menuState = new MenuState();
         this.gameOverState = new GameOverState();
+        this.exitGameState = new ExitGameState(this.engine);
 
         this.gameStateInputHandler = new GameStateInputHandler(this);
         this.menuStateInputHandler = new MenuStateInputHandler(this);
 
         inputHandlers.put(this.gameState,this.gameStateInputHandler);
         inputHandlers.put(this.menuState,this.menuStateInputHandler);
+        inputHandlers.put(this.exitGameState, null);
 
-        this.setCurrentState(this.gameState);
+        this.setCurrentState(this.menuState);
     }
 
     public GameState getGameState() {
         return this.gameState;
+    }
+
+    public ExitGameState getExitGameState() {
+        return this.exitGameState;
     }
 
     public MenuState getMenuState() {
