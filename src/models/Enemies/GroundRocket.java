@@ -1,6 +1,4 @@
-package models.Enemies;
-
-import models.MovableObject;
+package models.enemies;
 
 import java.awt.image.BufferedImage;
 

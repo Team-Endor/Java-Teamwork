@@ -3,10 +3,7 @@ package models;
 import interfaces.Movable;
 import state.GameState;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-
-import game.Engine;
 
 public abstract class MovableObject extends Object implements Movable {
     private boolean isMovingUp;

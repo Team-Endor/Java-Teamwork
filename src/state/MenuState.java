@@ -1,7 +1,8 @@
 package state;
 
 import gfx.Assets;
-import models.Backgrounds.Background;
+import models.backgrounds.Background;
+import models.MenuButton;
 import models.factories.MainMenuFactory;
 
 import java.awt.*;
@@ -62,7 +63,7 @@ public class MenuState extends State {
     public void render(Graphics graphics) {
         this.background.render(graphics);
 
-        for(MenuButton button : this.menuButtons){
+        for (MenuButton button : this.menuButtons) {
             button.render(graphics);
         }
     }

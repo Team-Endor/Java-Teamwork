@@ -1,4 +1,4 @@
-package state;
+package models;
 
 import game.Engine;
 import models.Object;

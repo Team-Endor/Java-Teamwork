@@ -36,8 +36,8 @@ public class StateManager {
         this.gameStateInputHandler = new GameStateInputHandler(this);
         this.menuStateInputHandler = new MenuStateInputHandler(this);
 
-        inputHandlers.put(this.gameState,this.gameStateInputHandler);
-        inputHandlers.put(this.menuState,this.menuStateInputHandler);
+        inputHandlers.put(this.gameState, this.gameStateInputHandler);
+        inputHandlers.put(this.menuState, this.menuStateInputHandler);
         inputHandlers.put(this.exitGameState, null);
 
         this.setCurrentState(this.menuState);
@@ -55,7 +55,7 @@ public class StateManager {
         return this.menuState;
     }
 
-    public GameOverState getGameOverState(){
+    public GameOverState getGameOverState() {
         return this.gameOverState;
     }
 
@@ -63,7 +63,7 @@ public class StateManager {
         return this.currentState;
     }
 
-    public Engine getEngine(){
+    public Engine getEngine() {
         return this.engine;
     }
 

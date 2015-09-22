@@ -1,4 +1,4 @@
-package models.Player;
+package models.player;
 
 import gfx.Assets;
 import interfaces.Killable;
@@ -7,13 +7,13 @@ import state.GameState;
 
 import java.awt.image.BufferedImage;
 
-public class Player extends MovableObject implements Killable{
-    private boolean isAlive;
-    private static Player instance;
-    private int health;
-    private static final int METEOR_WIDTH = 80;
-    private static final int METEOR_HEIGHT = 110;
-    private static int animationFrame = 0;
+public class Player extends MovableObject implements Killable {
+    private        boolean isAlive;
+    private static Player  instance;
+    private        int     health;
+    private static final int METEOR_WIDTH   = 80;
+    private static final int METEOR_HEIGHT  = 110;
+    private static       int animationFrame = 0;
 
     public static final int MaxHealth = 100;
 
@@ -21,7 +21,7 @@ public class Player extends MovableObject implements Killable{
         super(x, y, image, velocity);
 
         this.setHealth(health);
-        this.isAlive = true;
+        this.setIsAlive(true);
     }
 
     public int getHealth() {
@@ -32,6 +32,14 @@ public class Player extends MovableObject implements Killable{
         this.health = health;
     }
 
+    public void setIsAlive(boolean isAlive) {
+        this.isAlive = isAlive;
+    }
+
+    @Override
+    public boolean getIsAlive() {
+        return this.health > 0;
+    }
 
     public static Player createInstance(int x, int y, BufferedImage image, int velocity, int health) {
         if (instance == null) {
@@ -43,24 +51,24 @@ public class Player extends MovableObject implements Killable{
     @Override
     public void tick(int gameVelocity) {
 
-        if(animationFrame < 5){
-            this.setImage(Assets.Meteor.crop(0, 0, METEOR_WIDTH, METEOR_HEIGHT));
-        }else{
-            this.setImage(Assets.Meteor.crop(METEOR_WIDTH, 0, METEOR_WIDTH, METEOR_HEIGHT));
+        if (animationFrame < 5) {
+            this.setImage(Assets.meteor.crop(0, 0, METEOR_WIDTH, METEOR_HEIGHT));
+        } else {
+            this.setImage(Assets.meteor.crop(METEOR_WIDTH, 0, METEOR_WIDTH, METEOR_HEIGHT));
         }
         animationFrame++;
-        if(animationFrame == 10){
+        if (animationFrame == 10) {
             animationFrame = 0;
         }
 
         if (this.isMovingUp()) {
-            if(this.getY() - this.getVelocity() >= 0){
+            if (this.getY() - this.getVelocity() >= 0) {
                 this.move(0, -this.getVelocity());
             }
         }
 
         if (this.isMovingDown()) {
-            if(this.getY() + this.getImage().getHeight() + this.getVelocity() < GameState.BOARD_HEIGHT){
+            if (this.getY() + this.getImage().getHeight() + this.getVelocity() < GameState.BOARD_HEIGHT) {
                 this.move(0, this.getVelocity());
             }
         }
@@ -76,11 +84,5 @@ public class Player extends MovableObject implements Killable{
                 this.move(this.getVelocity(), 0);
             }
         }
-    }
-
-
-    @Override
-    public boolean getIsAlive() {
-        return this.health > 0;
     }
 }

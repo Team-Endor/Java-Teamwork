@@ -1,4 +1,4 @@
-package models.Backgrounds;
+package models.backgrounds;
 
 import java.awt.*;
 import java.util.Queue;

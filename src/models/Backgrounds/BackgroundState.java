@@ -1,4 +1,4 @@
-package models.Backgrounds;
+package models.backgrounds;
 
 import java.awt.image.BufferedImage;
 
@@ -16,7 +16,7 @@ public abstract class BackgroundState {
 	public BufferedImage getImage() {
 		return this.image;
 	}
-	
+
 	public abstract void tick();
 
 	public abstract boolean isStateFinished();

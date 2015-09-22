@@ -5,8 +5,8 @@ import state.StateManager;
 
 import java.awt.event.KeyEvent;
 
-public class MenuStateInputHandler extends InputHandler{
-    private int    keyCode;
+public class MenuStateInputHandler extends InputHandler {
+    private int keyCode;
 
     public MenuStateInputHandler(StateManager stateManager) {
         super(stateManager);
@@ -23,12 +23,12 @@ public class MenuStateInputHandler extends InputHandler{
         int numberOfMenuButtons = currentMenuState.numberOfMenuButtons();
 
         if (this.keyCode == KeyEvent.VK_UP) {
-            if(currentMenuState.getHoveredButtonIndex() > 0) {
+            if (currentMenuState.getHoveredButtonIndex() > 0) {
                 currentMenuState.setHoveredButtonIndex(currentMenuState.getHoveredButtonIndex() - 1);
             }
         }
         if (this.keyCode == KeyEvent.VK_DOWN) {
-            if(currentMenuState.getHoveredButtonIndex() < numberOfMenuButtons - 1) {
+            if (currentMenuState.getHoveredButtonIndex() < numberOfMenuButtons - 1) {
                 currentMenuState.setHoveredButtonIndex(currentMenuState.getHoveredButtonIndex() + 1);
             }
         }

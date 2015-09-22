@@ -1,6 +1,4 @@
-package models.Backgrounds;
-
-import models.*;
+package models.backgrounds;
 
 import java.awt.*;
 
@@ -10,7 +8,6 @@ public class Background extends models.Object {
 
     public Background(BufferedImage image) {
         super(0, 0, image);
-
     }
 
     @Override

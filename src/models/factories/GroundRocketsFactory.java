@@ -1,7 +1,7 @@
 package models.factories;
 
 import gfx.Assets;
-import models.Enemies.GroundRocket;
+import models.enemies.GroundRocket;
 
 import java.awt.image.BufferedImage;
 

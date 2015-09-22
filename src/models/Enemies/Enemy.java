@@ -1,4 +1,4 @@
-package models.Enemies;
+package models.enemies;
 
 import interfaces.Destroyable;
 import interfaces.Killable;

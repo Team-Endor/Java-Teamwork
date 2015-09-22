@@ -3,7 +3,7 @@ package physics;
 import java.awt.*;
 
 public class CollisionDetector {
-    public static boolean intersects(Rectangle firstBoundingBox, Rectangle secondBoundingBox) {    // check for collision
+    public static boolean intersects(Rectangle firstBoundingBox, Rectangle secondBoundingBox) {
         if (firstBoundingBox.x + firstBoundingBox.width >= secondBoundingBox.x &&
                 firstBoundingBox.y + firstBoundingBox.height >= secondBoundingBox.y &&
                 firstBoundingBox.y <= secondBoundingBox.y + secondBoundingBox.height &&

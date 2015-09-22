@@ -1,12 +1,12 @@
 package state.inputHandlers;
 
-import models.Player.Player;
+import models.player.Player;
 import state.StateManager;
 
 import java.awt.event.KeyEvent;
 
 public class GameStateInputHandler extends InputHandler {
-    private int    keyCode;
+    private int keyCode;
 
     public GameStateInputHandler(StateManager stateManager) {
         super(stateManager);
@@ -49,7 +49,7 @@ public class GameStateInputHandler extends InputHandler {
         if (this.keyCode == KeyEvent.VK_RIGHT) {
             player.setIsMovingRight(false);
         }
-        if (this.keyCode == KeyEvent.VK_ESCAPE){
+        if (this.keyCode == KeyEvent.VK_ESCAPE) {
             this.getStateManager().setCurrentState(this.getStateManager().getMenuState());
         }
     }

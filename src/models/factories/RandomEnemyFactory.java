@@ -2,8 +2,8 @@ package models.factories;
 
 import java.util.Random;
 
-import models.Enemies.Enemy;
-import models.Enemies.GroundRocket;
+import models.enemies.Enemy;
+import models.enemies.GroundRocket;
 
 public class RandomEnemyFactory {
 	private static final int ENEMY_TYPES_COUNT  = 5;

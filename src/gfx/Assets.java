@@ -15,8 +15,7 @@ public class Assets {
 
     public static BufferedImage mainMenuBackground;
     public static BufferedImage mainMenuPlay, mainMenuCredits, mainMenuSettings, mainMenuExit;
-    public static BufferedImage mainMenuInactivePlay, mainMenuInactiveCredits, mainMenuInactiveSettings,
-            mainMenuInactiveExit;
+    public static BufferedImage mainMenuInactivePlay, mainMenuInactiveCredits, mainMenuInactiveSettings, mainMenuInactiveExit;
 
 
     public static void init() {
@@ -29,7 +28,7 @@ public class Assets {
         backgroundSpaceAtmosphere = ImageLoader.loadImage("/images/backgrounds/2.png");
         backgroundAtmosphere = ImageLoader.loadImage("/images/backgrounds/3.jpg");
         backgroundGround = ImageLoader.loadImage("/images/backgrounds/4.jpg");
-        
+
         healthbar = ImageLoader.loadImage("/images/HealthBar.png");
         healthbarBorder = ImageLoader.loadImage("/images/HealthbarBorder.png");
 

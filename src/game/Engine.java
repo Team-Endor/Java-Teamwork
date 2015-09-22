@@ -14,8 +14,8 @@ public class Engine implements Runnable {
     public static       String WINDOW_TITLE  = "Team Endor Java Teamwork - The Meteor";
 
     private Thread  thread;
-    private boolean isRunning;
     private Display display;
+    private boolean isRunning;
 
     private BufferStrategy bufferStrategy;
     private Graphics       graphics;
@@ -40,7 +40,6 @@ public class Engine implements Runnable {
         this.bufferStrategy = display.getCanvas().getBufferStrategy();
 
         if (this.bufferStrategy == null) {
-            // Creates two buffers
             this.display.getCanvas().createBufferStrategy(2);
             this.bufferStrategy = display.getCanvas().getBufferStrategy();
         }
@@ -75,10 +74,12 @@ public class Engine implements Runnable {
 
         // we make settings, so the "ticks" are equal in time on all computers/ processors
         int fps = 30;                                   // frames per second
-        double timePerTick = 1_000_000_000.0 / fps;     // how much milliseconds it have to wait before a tick; 1 000 000 000 = 1 sec
+        double timePerTick = 1_000_000_000.0 / fps;     // how much milliseconds it have to wait before a tick; 1 000
+        // 000 000 = 1 sec
         double deltaTime = 0;                           // how much time passed  between now and the last time it ticked
         long now;
-        long lastTimeTicked = System.nanoTime();        // the value of current time (years/months/days/hours/minutes/seconds) in nano seconds
+        long lastTimeTicked = System.nanoTime();        // the value of current time
+                                                        // (years/months/days/hours/minutes/seconds) in nano seconds
 
         while (isRunning) {
             now = System.nanoTime();
@@ -97,7 +98,8 @@ public class Engine implements Runnable {
     }
 
     public synchronized void start() {
-        if (this.isRunning) {                        // Check whether the game is already running, not to create a second thread
+        if (this.isRunning) {                        // Check whether the game is already running, not to create a
+        // second thread
             return;
         }
         this.isRunning = true;
@@ -106,11 +108,11 @@ public class Engine implements Runnable {
     }
 
     public synchronized void stop() {
-        if (!this.isRunning) {                      // Check whether the game is already stopped, not to create an exception
+        if (!this.isRunning) {                      // Check whether the game is already stopped, not to create an
+        // exception
             return;
         }
         this.isRunning = false;
-
         try {
             this.thread.join();
         } catch (InterruptedException e) {

@@ -1,8 +1,8 @@
 package models.factories;
 
 import gfx.Assets;
-import models.Enemies.FighterPlane;
-import models.Enemies.PassangerPlane;
+import models.enemies.FighterPlane;
+import models.enemies.PassangerPlane;
 import state.GameState;
 
 import java.awt.image.BufferedImage;

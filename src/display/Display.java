@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Display extends Canvas {
-
     private int    width;
     private int    height;
     private String title;
@@ -23,7 +22,8 @@ public class Display extends Canvas {
     public Canvas getCanvas() {
         return this.canvas;
     }
-    public Frame getFrame(){
+
+    public Frame getFrame() {
         return this.frame;
     }
 
