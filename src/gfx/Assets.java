@@ -9,7 +9,7 @@ public class Assets {
     public static SpriteSheet Explosion;
     public static SpriteSheet Airplanes;
     public static SpriteSheet FighterPlane;
-    public static BufferedImage background;
+    public static BufferedImage backgroundSpace, backgroundSpaceAtmosphere, backgroundAtmosphere, backgroundGround;
     public static BufferedImage healthbar;
     public static BufferedImage healthbarBorder;
     public static BufferedImage GameOver;
@@ -24,7 +24,11 @@ public class Assets {
         Airplanes = new SpriteSheet(ImageLoader.loadImage("/images/airplanes-small.png"));
         FighterPlane = new SpriteSheet(ImageLoader.loadImage("/images/fighter-plane-small.png"));
 
-        background = ImageLoader.loadImage("/images/Sky.jpg");
+        backgroundSpace = ImageLoader.loadImage("/images/backgrounds/1.png");
+        backgroundSpaceAtmosphere = ImageLoader.loadImage("/images/backgrounds/2.png");
+        backgroundAtmosphere = ImageLoader.loadImage("/images/backgrounds/3.jpg");
+        backgroundGround = ImageLoader.loadImage("/images/backgrounds/4.jpg");
+        
         healthbar = ImageLoader.loadImage("/images/HealthBar.png");
         healthbarBorder = ImageLoader.loadImage("/images/HealthbarBorder.png");
 

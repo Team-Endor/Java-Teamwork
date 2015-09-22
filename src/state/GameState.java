@@ -2,15 +2,13 @@ package state;
 
 import gfx.Assets;
 import models.*;
-import models.Backgrounds.MovingBackground;
+import models.Backgrounds.ChangingBackground;
+import models.Backgrounds.MovingBackgroundState;
 import models.Enemies.Enemy;
-import models.Enemies.GroundRocket;
-import models.Object;
 import models.Player.Player;
-import models.factories.AirplanesFactory;
 import models.factories.ExplosionsFactory;
-import models.factories.GroundRocketsFactory;
 import models.factories.PlayerFactory;
+import models.factories.RandomEnemyFactory;
 import physics.CollisionDetector;
 
 import java.awt.*;
@@ -19,137 +17,163 @@ import java.util.List;
 import java.util.Random;
 
 public class GameState extends State {
-    public static final int BOARD_WIDTH = 800;
-    public static final int BOARD_HEIGHT = 600;
-    Random random = new Random();
+	private static final int BACKGROUND_SPEED = 10;
+	private static final int MAX_ENEMIES_COUNT = 5;
+	private static final int MIN_SPAWN_TIME = 20;
+	private static final int SPAWN_INTERVAL = 20;
 
-    private StateManager stateManager;
+	public static final int BOARD_WIDTH = 800;
+	public static final int BOARD_HEIGHT = 600;
 
-    private double Velocity = 5;
-    private int VelocityINT = 5;
-    private int DistanceTraveled = 1;
+	private static final Random random = new Random();
 
-    private Object background;
-    private HealthBar healthBar;
+	private StateManager stateManager;
 
-    private static Player player;
+	private int nextEnemyTimer = 0;
 
-    private List<Explosion> explosions;
-    private List<Enemy> enemies;
+	private double Velocity = 5;
+	private int VelocityINT = 5;
+	private int DistanceTraveled = 1;
 
-    private List<Explosion> explosionsToRemove;
-    private List<Enemy> enemiesToRemove;
-    private GroundRocket testGroundRocketFromLeft, testGroundRocketFromCenter, testGroundRocketFromRight;
+	private ChangingBackground background;
+	private HealthBar healthBar;
 
-    public GameState(StateManager stateManager) {
-        this.stateManager = stateManager;
-        this.init();
-    }
+	private static Player player;
 
-    public Player getPlayer() {
-        return player;
-    }
+	private List<Explosion> explosions;
+	private List<Enemy> enemies;
 
-    public void init() {
-        this.background = new MovingBackground(Assets.background);
-        this.player = PlayerFactory.generatePlayer();
-        this.healthBar = new HealthBar(this.getPlayer());
+	private List<Explosion> explosionsToRemove;
 
-        this.explosions = new ArrayList<>();
-        this.enemies = new ArrayList<>();
-        this.explosionsToRemove = new ArrayList<>();
-        this.enemiesToRemove = new ArrayList<>();
+	public GameState(StateManager stateManager) {
+		this.stateManager = stateManager;
+		this.init();
+	}
 
-        this.enemies.add(AirplanesFactory.generateAirplane());
-        this.enemies.add(AirplanesFactory.generateFighterPlane());
+	public Player getPlayer() {
+		return player;
+	}
 
-        this.testGroundRocketFromLeft = GroundRocketsFactory.generateGroundRocket(GroundRocket.Position.FromLeft);
-        this.testGroundRocketFromCenter = GroundRocketsFactory.generateGroundRocket(GroundRocket.Position.FromCenter);
-        this.testGroundRocketFromRight = GroundRocketsFactory.generateGroundRocket(GroundRocket.Position.FromRight);
-    }
+	public void init() {
+		this.background = new ChangingBackground();// Assets.background);
+		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpace, 2, BACKGROUND_SPEED));
+		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpaceAtmosphere, 1, BACKGROUND_SPEED));
+		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundAtmosphere, 4, BACKGROUND_SPEED));
+		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundGround, 1, BACKGROUND_SPEED));
 
-    @Override
-    public void tick() {
+		this.player = PlayerFactory.generatePlayer();
+		this.healthBar = new HealthBar(this.getPlayer());
 
-        if (this.DistanceTraveled < 50000000) {
-            int rand = random.nextInt(100);
-            if (rand == 0 || rand == 1) {
-                this.enemies.add(AirplanesFactory.generateAirplane());
-            }
-            if (rand == 5) {
-                this.enemies.add(AirplanesFactory.generateFighterPlane());
-            }
-        }
+		this.explosions = new ArrayList<>();
+		this.enemies = new ArrayList<>();
 
+		this.explosionsToRemove = new ArrayList<>();
+	}
 
-        this.background.tick(this.VelocityINT);
+	@Override
+	public void tick() {
 
-        explosionsToRemove.clear();
-        for (Explosion explosion : explosions) {
-            explosion.tick(this.VelocityINT);
-            if (!explosion.getIsAlive()) {
-                explosionsToRemove.add(explosion);
-            }
-        }
-        if (explosionsToRemove.size() > 0) {
-            explosions.removeAll(explosionsToRemove);
-        }
+		/*
+		 * if (this.DistanceTraveled < 50000000) { int rand =
+		 * random.nextInt(100); if (rand == 0 || rand == 1) {
+		 * this.enemies.add(AirplanesFactory.generateAirplane()); } if (rand ==
+		 * 5) { this.enemies.add(AirplanesFactory.generateFighterPlane()); } }
+		 */
 
-        enemiesToRemove.clear();
-        for (Enemy enemy : enemies) {
-            enemy.tick(this.VelocityINT);
+		this.background.tick();// this.VelocityINT);
 
-            if (CollisionDetector.intersects(this.player.getBoundingBox(), enemy.getBoundingBox())) {
-                this.player.setHealth(this.player.getHealth() - 100);
-                System.out.println(this.player.getHealth());
-                this.explosions.add(ExplosionsFactory.createExplosion(enemy.getX(), enemy.getY()));
-                enemy.setIsAlive(false);
-            }
+		explosionsToRemove.clear();
+		for (Explosion explosion : explosions) {
+			explosion.tick(this.VelocityINT);
+			if (!explosion.getIsAlive()) {
+				explosionsToRemove.add(explosion);
+			}
+		}
+		if (explosionsToRemove.size() > 0) {
+			explosions.removeAll(explosionsToRemove);
+		}
 
-            if (!enemy.getIsAlive()) {
-                enemiesToRemove.add(enemy);
-            }
-        }
-        if (enemiesToRemove.size() > 0) {
-            enemies.removeAll(enemiesToRemove);
-        }
+		this.processCollision();
 
+		this.removeDestoyedEnemies();
 
-        this.player.tick((int) this.Velocity);
-        this.testGroundRocketFromLeft.tick(this.VelocityINT);
-        this.testGroundRocketFromCenter.tick(this.VelocityINT);
-        this.testGroundRocketFromRight.tick(this.VelocityINT);
+		this.spawnEnemy();
 
-        this.healthBar.tick(this.VelocityINT);
+		this.player.tick((int) this.Velocity);
 
-        if (!this.player.getIsAlive()) {
-            this.stateManager.setCurrentState(this.stateManager.getGameOverState());
-        }
+		this.healthBar.tick(this.VelocityINT);
 
-        this.Velocity += 0.01;
-        this.VelocityINT = (int) Velocity;
-        this.DistanceTraveled += this.VelocityINT;
-    }
+		if (!this.player.getIsAlive()) {
+			this.stateManager.setCurrentState(this.stateManager.getGameOverState());
+		}
 
-    @Override
-    public void render(Graphics graphics) {
-        // Begin drawing
-        this.background.render(graphics);
+		if (this.background.isFinnished()) {
+			// victory
+			System.out.println("Victory");
+		}
 
-        for (Explosion explosion : explosions) {
-            explosion.render(graphics);
-        }
+		this.Velocity += 0.01;
+		this.VelocityINT = (int) Velocity;
+		this.DistanceTraveled += this.VelocityINT;
+	}
 
-        for (Enemy enemy : enemies) {
-            enemy.render(graphics);
-        }
+	@Override
+	public void render(Graphics graphics) {
+		// Begin drawing
+		this.background.render(graphics);
 
-        this.player.render(graphics);
-        this.testGroundRocketFromLeft.render(graphics);
-        this.testGroundRocketFromCenter.render(graphics);
-        this.testGroundRocketFromRight.render(graphics);
+		for (Explosion explosion : explosions) {
+			explosion.render(graphics);
+		}
 
-        this.healthBar.render(graphics);
-        graphics.drawString(String.format("DISTANCE: %d", this.DistanceTraveled), 608, 110);
-    }
+		for (Enemy enemy : enemies) {
+			enemy.render(graphics);
+		}
+
+		this.player.render(graphics);
+
+		this.healthBar.render(graphics);
+		graphics.drawString(String.format("DISTANCE: %d", this.DistanceTraveled), 608, 110);
+	}
+
+	private void processCollision() {
+		for (int i = 0; i < this.enemies.size(); ++i) {
+			Enemy enemy = this.enemies.get(i);
+
+			enemy.tick(this.VelocityINT);
+
+			if (CollisionDetector.intersects(this.player.getBoundingBox(), enemy.getBoundingBox())) {
+				this.player.setHealth(this.player.getHealth() - 25);
+				System.out.println(this.player.getHealth());
+				this.explosions.add(ExplosionsFactory.createExplosion(enemy.getX(), enemy.getY()));
+				enemy.setIsAlive(false);
+			}
+
+			// TODO: move isOnScreen method?
+			if (!enemy.isOnScreen()) {
+				enemy.setForDestruction();
+			}
+		}
+	}
+
+	private void removeDestoyedEnemies() {
+		for (int i = 0; i < this.enemies.size(); ++i) {
+			if (this.enemies.get(i).isSetForDestruction()) {
+				this.enemies.remove(i);
+				--i;
+			}
+		}
+	}
+
+	private void spawnEnemy() {
+		if (this.enemies.size() < MAX_ENEMIES_COUNT) {
+			--nextEnemyTimer;
+			if (nextEnemyTimer <= 0) {
+				// TODO: set to spawn random enemy not just Airplanes
+				this.enemies.add(RandomEnemyFactory.generateEnemy());
+
+				nextEnemyTimer = MIN_SPAWN_TIME + this.random.nextInt(SPAWN_INTERVAL);
+			}
+		}
+	}
 }

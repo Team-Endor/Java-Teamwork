@@ -1,7 +1,7 @@
 package interfaces;
 
 public interface Destroyable {
-	public abstract void destroy();
+	public abstract void setForDestruction();
 	
-	public abstract boolean toDestory();
+	public abstract boolean isSetForDestruction();
 }

@@ -4,7 +4,7 @@ import models.MovableObject;
 
 import java.awt.image.BufferedImage;
 
-public class GroundRocket extends MovableObject {
+public class GroundRocket extends Enemy {
     private Position position;
 
     public GroundRocket(int x, int y, BufferedImage image, int velocity, Position position) {

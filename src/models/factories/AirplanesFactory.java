@@ -67,16 +67,14 @@ public class AirplanesFactory {
                 break;
         }
 
-        int y = random.nextInt(AIRPLANE_SPAWN_Y) + AIRPLANE_SPAWN_Y;
+        //int y = random.nextInt(AIRPLANE_SPAWN_Y) + AIRPLANE_SPAWN_Y;
+        int y = random.nextInt(AIRPLANE_SPAWN_Y - 2) + 1;// + AIRPLANE_SPAWN_Y;
         int x = 0;
         if(image < 4){
             x = random.nextInt(AIRPLANE_SPAWN_X);
-
         }else{
             x = random.nextInt(AIRPLANE_SPAWN_X/2);
         }
-
-
 
         PassangerPlane createdAirplane = new PassangerPlane(x, y, airplaneImage, AIRPLANE_VELOCITY);
         if (image < 4) {
@@ -101,7 +99,8 @@ public class AirplanesFactory {
                 break;
         }
 
-        int y = random.nextInt(AIRPLANE_SPAWN_Y) + AIRPLANE_SPAWN_Y;
+        // int y = random.nextInt(AIRPLANE_SPAWN_Y) + AIRPLANE_SPAWN_Y;
+        int y = random.nextInt(AIRPLANE_SPAWN_Y - 2) + 1;// + AIRPLANE_SPAWN_Y;
         int x = 0;
         if(image < 1){
             x = random.nextInt(AIRPLANE_SPAWN_X);
