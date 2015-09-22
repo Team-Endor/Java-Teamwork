@@ -29,6 +29,15 @@ public class GameStateInputHandler extends InputHandler {
         if (this.keyCode == KeyEvent.VK_RIGHT) {
             player.setIsMovingRight(true);
         }
+        if (this.keyCode == KeyEvent.VK_ESCAPE) {
+            player.setIsMovingUp(false);
+            player.setIsMovingDown(false);
+            player.setIsMovingLeft(false);
+            player.setIsMovingRight(false);
+
+            this.getStateManager().getGameState().setIsPaused(true);
+            this.getStateManager().setCurrentState(this.getStateManager().getMenuState());
+        }
     }
 
     @Override

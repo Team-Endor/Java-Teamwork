@@ -46,4 +46,8 @@ public class Display extends Canvas {
         frame.add(canvas);
         frame.pack();                             // creates a new entity
     }
+
+    public void dispose(){
+        this.frame.dispose();
+    }
 }

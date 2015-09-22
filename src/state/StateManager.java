@@ -17,36 +17,44 @@ public class StateManager {
 
     private GameState gameState;
     private MenuState menuState;
+    private ExitGameState exitGameState;
 
     private GameStateInputHandler gameStateInputHandler;
     private MenuStateInputHandler menuStateInputHandler;
 
     private State currentState;
 
-    private boolean shouldChangeState;
-
     public StateManager(Engine engine) {
         this.engine = engine;
-        this.shouldChangeState = false;
 
         this.gameState = new GameState();
         this.menuState = new MenuState();
+        this.exitGameState = new ExitGameState(this.engine);
 
         this.gameStateInputHandler = new GameStateInputHandler(this);
         this.menuStateInputHandler = new MenuStateInputHandler(this);
 
-        inputHandlers.put(this.gameState,this.gameStateInputHandler);
-        inputHandlers.put(this.menuState,this.menuStateInputHandler);
+        inputHandlers.put(this.gameState, this.gameStateInputHandler);
+        inputHandlers.put(this.menuState, this.menuStateInputHandler);
+        inputHandlers.put(this.exitGameState, null);
 
-        this.setCurrentState(this.gameState);
+        this.setCurrentState(this.menuState);
+    }
+
+    public Engine getEngine() {
+        return this.engine;
+    }
+
+    public MenuState getMenuState() {
+        return this.menuState;
     }
 
     public GameState getGameState() {
         return this.gameState;
     }
 
-    public MenuState getMenuState() {
-        return this.menuState;
+    public ExitGameState getExitGameState() {
+        return this.exitGameState;
     }
 
     public State getCurrentState() {
@@ -65,13 +73,5 @@ public class StateManager {
         }
 
         display.getCanvas().addKeyListener(inputHandlers.get(stateToSet));
-    }
-
-    public boolean getShouldChangeState() {
-        return this.shouldChangeState;
-    }
-
-    public void setShouldChangeState(boolean shouldChangeState) {
-        this.shouldChangeState = shouldChangeState;
     }
 }

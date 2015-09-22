@@ -50,9 +50,9 @@ public class Player extends MovableObject implements Killable {
     public void tick() {
 
         if (animationFrame < 5) {
-            this.setImage(Assets.Meteor.crop(0, 0, METEOR_WIDTH, METEOR_HEIGHT));
+            this.setImage(Assets.meteor.crop(0, 0, METEOR_WIDTH, METEOR_HEIGHT));
         } else {
-            this.setImage(Assets.Meteor.crop(METEOR_WIDTH, 0, METEOR_WIDTH, METEOR_HEIGHT));
+            this.setImage(Assets.meteor.crop(METEOR_WIDTH, 0, METEOR_WIDTH, METEOR_HEIGHT));
         }
         animationFrame++;
         if (animationFrame == 10) {

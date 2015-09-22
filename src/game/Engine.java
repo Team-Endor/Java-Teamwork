@@ -29,6 +29,10 @@ public class Engine implements Runnable {
         this.isRunning = false;
     }
 
+    public void setIsRunning(boolean isRunning) {
+        this.isRunning = isRunning;
+    }
+
     public Display getDisplay() {
         return this.display;
     }
@@ -62,8 +66,8 @@ public class Engine implements Runnable {
 
         // End drawing
 
-        this.bufferStrategy.show();
         this.graphics.dispose();
+        this.bufferStrategy.show();
     }
 
     @Override
@@ -84,13 +88,14 @@ public class Engine implements Runnable {
             lastTimeTicked = now;
 
             if (deltaTime >= 1) {
-                tick();
-                render();
+                this.tick();
+                this.render();
                 deltaTime--;
             }
         }
 
-        stop();
+        this.stop();
+        this.display.dispose();
     }
 
     public synchronized void start() {

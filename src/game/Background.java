@@ -7,17 +7,16 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Background {
-
 	private int x;
 	private int y;
 
 	private BufferedImage backgroundImage;
 
-	public Background() {
+	public Background(BufferedImage backgroundImage) {
 		this.x = 0;
 		this.y = 0;
 
-		this.backgroundImage = Assets.background;
+		this.backgroundImage = backgroundImage;
 	}
 
 	public void tick() {

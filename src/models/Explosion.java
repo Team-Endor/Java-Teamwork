@@ -34,7 +34,7 @@ public class Explosion extends Object implements Killable {
             } else if (animationFrame > 7) {
                 offsetY = EXPLOSION_HEIGHT;
             }
-            this.setImage(Assets.Explosion.crop(offsetX, offsetY, EXPLOSION_WIDTH, EXPLOSION_HEIGHT));
+            this.setImage(Assets.explosion.crop(offsetX, offsetY, EXPLOSION_WIDTH, EXPLOSION_HEIGHT));
             animationFrame++;
         }
     }

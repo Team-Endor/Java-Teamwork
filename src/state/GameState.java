@@ -2,6 +2,7 @@ package state;
 
 import game.Background;
 import game.Engine;
+import gfx.Assets;
 import gfx.HealthBar;
 import models.*;
 import models.factories.AirplanesFactory;
@@ -24,6 +25,8 @@ public class GameState extends State {
     private FighterPlane    testFighterPlane;
     private GroundRocket    testGroundRocketFromLeft, testGroundRocketFromCenter, testGroundRocketFromRight;
 
+    private boolean isPaused;
+
     public GameState() {
         this.init();
     }
@@ -32,8 +35,18 @@ public class GameState extends State {
         return player;
     }
 
+    public boolean getIsPaused() {
+        return isPaused;
+    }
+
+    public void setIsPaused(boolean isPaused) {
+        this.isPaused = isPaused;
+    }
+
     public void init() {
-        this.background = new Background();
+        this.setIsPaused(true);
+
+        this.background = new Background(Assets.gameBackground);
         this.player = PlayerFactory.generatePlayer();
 
         this.explosions = new ArrayList<>();
@@ -49,42 +62,44 @@ public class GameState extends State {
 
     @Override
     public void tick() {
-        this.background.tick();
+        if(!isPaused) {
+            this.background.tick();
 
-        List<Explosion> explosionsToRemove = new ArrayList<>();
-        for (Explosion explosion : explosions) {
-            explosion.tick();
-            if (!explosion.getIsAlive()) {
-                explosionsToRemove.add(explosion);
+            List<Explosion> explosionsToRemove = new ArrayList<>();
+            for (Explosion explosion : explosions) {
+                explosion.tick();
+                if (!explosion.getIsAlive()) {
+                    explosionsToRemove.add(explosion);
+                }
             }
-        }
-        explosions.removeAll(explosionsToRemove);
+            explosions.removeAll(explosionsToRemove);
 
-        List<Airplane> airplanesToRemove = new ArrayList<>();
-        for (Airplane airplane : airplanes) {
-            airplane.tick();
+            List<Airplane> airplanesToRemove = new ArrayList<>();
+            for (Airplane airplane : airplanes) {
+                airplane.tick();
 
-            if (CollisionDetector.intersects(this.player.getBoundingBox(), airplane.getBoundingBox())) {
-                this.player.setCurrentHealth(this.player.getCurrentHealth() - 25);
-                System.out.println(this.player.getCurrentHealth());
-                this.explosions.add(ExplosionsFactory.createExplosion(airplane.getX(), airplane.getY()));
-                airplane.setIsAlive(false);
+                if (CollisionDetector.intersects(this.player.getBoundingBox(), airplane.getBoundingBox())) {
+                    this.player.setCurrentHealth(this.player.getCurrentHealth() - 25);
+                    System.out.println(this.player.getCurrentHealth());
+                    this.explosions.add(ExplosionsFactory.createExplosion(airplane.getX(), airplane.getY()));
+                    airplane.setIsAlive(false);
+                }
+
+                if (!airplane.getIsAlive() || !airplane.isOnScreen()) {
+                    airplanesToRemove.add(airplane);
+                }
             }
+            airplanes.removeAll(airplanesToRemove);
 
-            if (!airplane.getIsAlive() || !airplane.isOnScreen()) {
-                airplanesToRemove.add(airplane);
+            this.player.tick();
+            this.testGroundRocketFromLeft.tick();
+            this.testGroundRocketFromCenter.tick();
+            this.testGroundRocketFromRight.tick();
+
+            if (!this.player.getIsAlive()) {
+                System.out.print("You died!");
+                // TODO What happens if player dies
             }
-        }
-        airplanes.removeAll(airplanesToRemove);
-
-        this.player.tick();
-        this.testGroundRocketFromLeft.tick();
-        this.testGroundRocketFromCenter.tick();
-        this.testGroundRocketFromRight.tick();
-
-        if (!this.player.getIsAlive()) {
-            System.out.print("You died!");
-            // TODO What happens if player dies
         }
     }
 
