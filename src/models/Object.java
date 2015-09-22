@@ -40,7 +40,8 @@ public abstract class Object {
     }
 
     public Rectangle getBoundingBox() {
-        Rectangle currentBoundingBox = new Rectangle(this.getX(),
+        Rectangle currentBoundingBox = new Rectangle(
+                this.getX(),
                 this.getY(),
                 this.getImage().getWidth(),
                 this.getImage().getHeight());
@@ -48,7 +49,7 @@ public abstract class Object {
         return currentBoundingBox;
     }
 
-    public abstract void tick();
+    public abstract void tick(int gameVelocity);
 
     public void render(Graphics graphics) {
         graphics.drawImage(this.getImage(), this.getX(), this.getY(), null);

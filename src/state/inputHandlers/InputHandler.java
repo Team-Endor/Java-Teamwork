@@ -13,7 +13,7 @@ public abstract class InputHandler implements KeyListener {
     }
 
     public StateManager getStateManager() {
-        return stateManager;
+        return this.stateManager;
     }
 
     @Override

@@ -5,15 +5,14 @@ import gfx.Assets;
 import state.State;
 import state.StateManager;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 public class Engine implements Runnable {
     public static final int    WINDOW_WIDTH  = 800;
-    public static       int    WINDOW_HEIGHT = 600;
+    public static final int    WINDOW_HEIGHT = 600;
     public static       String WINDOW_TITLE  = "Team Endor Java Teamwork - The Meteor";
-
-    public static int VELOCITY = 5;
 
     private Thread  thread;
     private boolean isRunning;
@@ -29,16 +28,19 @@ public class Engine implements Runnable {
         this.isRunning = false;
     }
 
-    public void setIsRunning(boolean isRunning) {
-        this.isRunning = isRunning;
-    }
-
     public Display getDisplay() {
         return this.display;
     }
 
     private void init() {
         this.display = new Display(this.WINDOW_TITLE, this.WINDOW_WIDTH, this.WINDOW_HEIGHT);
+        this.bufferStrategy = display.getCanvas().getBufferStrategy();
+
+        if (this.bufferStrategy == null) {
+            // Creates two buffers
+            this.display.getCanvas().createBufferStrategy(2);
+            this.bufferStrategy = display.getCanvas().getBufferStrategy();
+        }
 
         Assets.init();
 
@@ -51,22 +53,16 @@ public class Engine implements Runnable {
     }
 
     private void render() {
-        this.bufferStrategy = display.getCanvas().getBufferStrategy();
 
-        if (this.bufferStrategy == null) {
-            this.display.getCanvas().createBufferStrategy(2);         // Creates two buffers
-            this.bufferStrategy = display.getCanvas().getBufferStrategy();
-        }
 
         this.graphics = this.bufferStrategy.getDrawGraphics();
-        this.graphics.clearRect(0, 0, this.WINDOW_WIDTH, this.WINDOW_HEIGHT);              // clear the last image of the player
+        // clear the last image of the player
+        this.graphics.clearRect(0, 0, this.WINDOW_WIDTH, this.WINDOW_HEIGHT);
 
         // Begin drawing
         this.currentState.render(this.graphics);
 
         // End drawing
-
-        this.graphics.dispose();
         this.bufferStrategy.show();
     }
 
@@ -88,14 +84,12 @@ public class Engine implements Runnable {
             lastTimeTicked = now;
 
             if (deltaTime >= 1) {
-                this.tick();
-                this.render();
+                tick();
+                render();
                 deltaTime--;
             }
         }
 
-        this.stop();
-        this.display.dispose();
     }
 
     public synchronized void start() {
@@ -112,8 +106,10 @@ public class Engine implements Runnable {
             return;
         }
         this.isRunning = false;
+
         try {
             this.thread.join();
+            this.display.getFrame().dispose();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -1,4 +1,6 @@
-package models;
+package models.Enemies;
+
+import models.MovableObject;
 
 import java.awt.image.BufferedImage;
 
@@ -11,7 +13,7 @@ public class GroundRocket extends MovableObject {
     }
 
     @Override
-    public void tick() {
+    public void tick(int gameVelocity) {
         if (this.position == Position.FromLeft) {
             this.move(this.getVelocity(), -this.getVelocity());
         }

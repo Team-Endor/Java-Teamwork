@@ -23,6 +23,9 @@ public class Display extends Canvas {
     public Canvas getCanvas() {
         return this.canvas;
     }
+    public Frame getFrame(){
+        return this.frame;
+    }
 
     private void createFrame() { //Creates the frame
         frame = new JFrame(this.title);
@@ -45,9 +48,5 @@ public class Display extends Canvas {
 
         frame.add(canvas);
         frame.pack();                             // creates a new entity
-    }
-
-    public void dispose(){
-        this.frame.dispose();
     }
 }

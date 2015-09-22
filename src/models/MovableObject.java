@@ -1,8 +1,8 @@
 package models;
 
-import game.Engine;
 import interfaces.Movable;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public abstract class MovableObject extends Object implements Movable {
@@ -10,7 +10,7 @@ public abstract class MovableObject extends Object implements Movable {
     private boolean isMovingDown;
     private boolean isMovingLeft;
     private boolean isMovingRight;
-    private int     velocity;
+    private int velocity;
 
     protected MovableObject(int x, int y, BufferedImage image, int velocity) {
         super(x, y, image);
@@ -64,7 +64,7 @@ public abstract class MovableObject extends Object implements Movable {
     }
 
     protected void setVelocity(int velocity) {
-        if (velocity <= 0) {
+        if (velocity < 0) {
             throw new IllegalArgumentException();
         }
 
@@ -72,21 +72,21 @@ public abstract class MovableObject extends Object implements Movable {
     }
 
     @Override
-    public void tick() {
+    public void tick(int gameVelocity) {
         if (this.isMovingUp()) {
-            this.move(-Engine.VELOCITY / 2, -this.getVelocity());
+            this.move(0, -this.getVelocity() - gameVelocity);
         }
 
         if (this.isMovingDown()) {
-            this.move(-Engine.VELOCITY / 2, this.getVelocity());
+            this.move(0, this.getVelocity() - gameVelocity);
         }
 
         if (this.isMovingLeft()) {
-            this.move(-this.getVelocity(), -Engine.VELOCITY / 2);
+            this.move(-this.getVelocity(), -gameVelocity);
         }
 
         if (this.isMovingRight()) {
-            this.move(this.getVelocity(), -Engine.VELOCITY / 2);
+            this.move(this.getVelocity(), -gameVelocity);
         }
     }
 
@@ -94,12 +94,5 @@ public abstract class MovableObject extends Object implements Movable {
     public void move(int deltaX, int deltaY) {
         this.setX(this.getX() + deltaX);
         this.setY(this.getY() + deltaY);
-    }
-
-    public boolean isOnScreen() {
-        return this.getX() + this.getImage().getWidth() > 0 &&
-                this.getX() < Engine.WINDOW_WIDTH &&
-                this.getY() + this.getImage().getHeight() > 0 &&
-                this.getY() < Engine.WINDOW_HEIGHT;
     }
 }

@@ -17,7 +17,7 @@ public class StateManager {
 
     private GameState gameState;
     private MenuState menuState;
-    private ExitGameState exitGameState;
+    private GameOverState gameOverState;
 
     private GameStateInputHandler gameStateInputHandler;
     private MenuStateInputHandler menuStateInputHandler;
@@ -27,38 +27,37 @@ public class StateManager {
     public StateManager(Engine engine) {
         this.engine = engine;
 
-        this.gameState = new GameState();
-        this.menuState = new MenuState();
-        this.exitGameState = new ExitGameState(this.engine);
+        this.gameState = new GameState(this);
+        this.menuState = new MenuState(this);
+        this.gameOverState = new GameOverState();
 
         this.gameStateInputHandler = new GameStateInputHandler(this);
         this.menuStateInputHandler = new MenuStateInputHandler(this);
 
-        inputHandlers.put(this.gameState, this.gameStateInputHandler);
-        inputHandlers.put(this.menuState, this.menuStateInputHandler);
-        inputHandlers.put(this.exitGameState, null);
+        inputHandlers.put(this.gameState,this.gameStateInputHandler);
+        inputHandlers.put(this.menuState,this.menuStateInputHandler);
 
-        this.setCurrentState(this.menuState);
-    }
-
-    public Engine getEngine() {
-        return this.engine;
-    }
-
-    public MenuState getMenuState() {
-        return this.menuState;
+        this.setCurrentState(this.gameState);
     }
 
     public GameState getGameState() {
         return this.gameState;
     }
 
-    public ExitGameState getExitGameState() {
-        return this.exitGameState;
+    public MenuState getMenuState() {
+        return this.menuState;
+    }
+
+    public GameOverState getGameOverState(){
+        return this.gameOverState;
     }
 
     public State getCurrentState() {
         return this.currentState;
+    }
+
+    public Engine getEngine(){
+        return this.engine;
     }
 
     public void setCurrentState(State stateToSet) {

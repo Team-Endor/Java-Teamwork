@@ -1,7 +1,7 @@
 package models.factories;
 
 import gfx.Assets;
-import models.GroundRocket;
+import models.Enemies.GroundRocket;
 
 import java.awt.image.BufferedImage;
 
@@ -18,7 +18,8 @@ public class GroundRocketsFactory {
 
     public static GroundRocket generateGroundRocket(GroundRocket.Position position) {
         if (position == GroundRocket.Position.FromLeft) {
-            return new GroundRocket(GROUND_ROCKET_FROM_LEFT_X,
+            return new GroundRocket(
+                    GROUND_ROCKET_FROM_LEFT_X,
                     GROUND_ROCKETS_Y,
                     GROUND_ROCKET_FROM_LEFT_IMAGE,
                     GROUND_ROCKETS_VELOCITY,
@@ -32,7 +33,8 @@ public class GroundRocketsFactory {
                     GroundRocket.Position.FromCenter);
         }
         if (position == GroundRocket.Position.FromRight) {
-            return new GroundRocket(GROUND_ROCKET_FROM_RIGHT_X,
+            return new GroundRocket(
+                    GROUND_ROCKET_FROM_RIGHT_X,
                     GROUND_ROCKETS_Y,
                     GROUND_ROCKET_FROM_RIGHT_IMAGE,
                     GROUND_ROCKETS_VELOCITY,

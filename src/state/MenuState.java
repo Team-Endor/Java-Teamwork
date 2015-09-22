@@ -1,63 +1,89 @@
 package state;
 
-import game.Background;
+import game.Engine;
 import gfx.Assets;
-import models.factories.MainMenuFactory;
 
+import javax.swing.*;
 import java.awt.*;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 public class MenuState extends State {
-    private Background background;
+    private StateManager stateManager;
+    private BufferedImage background;
+    private BufferedImage playButton;
+    private BufferedImage exitButton;
+    private JPanel panel;
 
-    List<MenuButton> menuButtons;
-    private int hoveredButtonIndex;
-
-    public MenuState() {
+    public MenuState(StateManager stateManager) {
         this.init();
-    }
-
-    public int getHoveredButtonIndex() {
-        return this.hoveredButtonIndex;
-    }
-
-    public void setHoveredButtonIndex(int hoveredButtonIndex) {
-        this.hoveredButtonIndex = hoveredButtonIndex;
-    }
-
-    public int numberOfMenuButtons() {
-        return this.menuButtons.size();
+        this.stateManager = stateManager;
     }
 
     public void init() {
-        this.background = new Background(Assets.mainMenuBackground);
+        this.background = Assets.Menu;
+        this.playButton = Assets.playButton;
+        this.exitButton = Assets.exitButton;
 
-        this.menuButtons = MainMenuFactory.generateMenuButtons();
+        panel = new JPanel();
+        panel.setSize(800, 600);
+        panel.setLayout(null);
 
-        this.hoveredButtonIndex = 0;
+        JLabel background = new JLabel();
+        background.setIcon(new ImageIcon(this.background));
+        background.setLocation(0, 0);
+        background.setSize(800, 600);
+
+
+        JButton play = new JButton();
+        play.setSize(this.playButton.getWidth(), this.playButton.getHeight());
+        play.setBorder(BorderFactory.createEmptyBorder());
+        play.setBackground(new Color(0, 0, 0, 1));
+        play.setIcon(new ImageIcon(playButton));
+        play.setLocation(250, 250);
+        play.setActionCommand("a");
+        play.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                stateManager.setCurrentState(stateManager.getGameState());
+            }
+        });
+
+
+        JButton exit = new JButton();
+        exit.setLocation(350, 350);
+        exit.setSize(this.exitButton.getWidth(), this.exitButton.getHeight());
+        exit.setBorder(BorderFactory.createEmptyBorder());
+        exit.setBackground(new Color(0, 0, 0, 1));
+        exit.setIcon(new ImageIcon(exitButton));
+        exit.setActionCommand("b");
+        exit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                stateManager.getEngine().stop();
+            }
+        });
+
+
+        panel.add(play);
+        panel.add(exit);
+        panel.add(background);
+
     }
 
     @Override
     public void tick() {
-        for (int i = 0; i < menuButtons.size(); i++) {
-            if (i == hoveredButtonIndex) {
-                menuButtons.get(i).setIsHovered(true);
-            } else {
-                menuButtons.get(i).setIsHovered(false);
-            }
-        }
-
-        for (MenuButton button : this.menuButtons) {
-            button.tick();
-        }
     }
 
     @Override
     public void render(Graphics graphics) {
-        this.background.render(graphics);
 
-        for(MenuButton button : this.menuButtons){
-            button.render(graphics);
-        }
+
+        this.panel.paint(graphics);
+
     }
 }
