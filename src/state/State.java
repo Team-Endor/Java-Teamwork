@@ -5,11 +5,12 @@ package state;
 // Game state
 // state end game
 
-import com.sun.prism.Graphics;
+import java.awt.*;
 
 public abstract class State {
+    public abstract void init();
 
     public abstract void tick();
 
-    public abstract void render(Graphics g);
+    public abstract void render(Graphics graphics);
 }

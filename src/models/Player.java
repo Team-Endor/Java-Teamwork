@@ -1,6 +1,6 @@
 package models;
 
-import game.Game;
+import game.Engine;
 import gfx.Assets;
 import interfaces.Killable;
 
@@ -74,7 +74,7 @@ public class Player extends MovableObject implements Killable {
         }
 
         if (this.isMovingRight()) {
-            if (this.getX() + this.getVelocity() < Game.WINDOW_WIDTH - this.getImage().getWidth()) {
+            if (this.getX() + this.getVelocity() < Engine.WINDOW_WIDTH - this.getImage().getWidth()) {
                 this.move(this.getVelocity(), 0);
             }
         }

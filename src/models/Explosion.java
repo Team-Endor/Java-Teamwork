@@ -1,7 +1,7 @@
 package models;
 
 
-import game.Game;
+import game.Engine;
 import gfx.Assets;
 import interfaces.Killable;
 
@@ -21,7 +21,7 @@ public class Explosion extends Object implements Killable {
 
     @Override
     public void tick() {
-        this.setY(this.getY() - Game.VELOCITY);
+        this.setY(this.getY() - Engine.VELOCITY);
         if (animationFrame == 32) {
             this.isAlive = false;
         } else {

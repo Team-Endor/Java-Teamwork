@@ -1,10 +1,8 @@
 package gfx;
 
-// This class is created to make loading of the images faster, "init" from Game class is here
+// This class is created to make loading of the images faster, "init" from Engine class is here
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-
 
 public class Assets {
 

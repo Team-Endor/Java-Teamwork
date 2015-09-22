@@ -21,7 +21,7 @@ public class Background {
 	}
 
 	public void tick() {
-		this.y -= Game.VELOCITY;
+		this.y -= Engine.VELOCITY;
 		if (this.y < 0) {
 			this.y = this.backgroundImage.getHeight();
 		}

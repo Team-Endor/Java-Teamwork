@@ -1,6 +1,6 @@
 package models.factories;
 
-import game.Game;
+import game.Engine;
 import gfx.Assets;
 import models.FighterPlane;
 import models.PassangerPlane;
@@ -64,8 +64,8 @@ public class AirplanesFactory {
     private static final int           FIGHTER_PLANE_VELOCITY    = 12;
 
     public static PassangerPlane generateAirplane() {
-        int x = random.nextInt(Game.WINDOW_WIDTH);
-        int y = random.nextInt(Game.WINDOW_HEIGHT);
+        int x = random.nextInt(Engine.WINDOW_WIDTH);
+        int y = random.nextInt(Engine.WINDOW_HEIGHT);
         int image = random.nextInt(8);
         BufferedImage airplaneImage = AIRPLANE1RIGHT_IMAGE;
         switch (image) {
@@ -105,8 +105,8 @@ public class AirplanesFactory {
     }
 
     public static FighterPlane generateFighterPlane() {
-        int x = random.nextInt(Game.WINDOW_WIDTH);
-        int y = random.nextInt(Game.WINDOW_HEIGHT);
+        int x = random.nextInt(Engine.WINDOW_WIDTH);
+        int y = random.nextInt(Engine.WINDOW_HEIGHT);
 
         int image = random.nextInt(2);
         BufferedImage airplaneImage = FIGHTER_PLANE_LEFT_IMAGE;

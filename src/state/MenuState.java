@@ -1,14 +1,15 @@
 package state;
 
-import com.sun.prism.Graphics;
+import java.awt.*;
 
 public class MenuState extends State {
-
-
     public MenuState() {
-        // TODO implement MenuState
+        this.init();
     }
 
+    public void init() {
+
+    }
 
     @Override
     public void tick() {
@@ -16,7 +17,7 @@ public class MenuState extends State {
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics graphics) {
 
     }
 }
