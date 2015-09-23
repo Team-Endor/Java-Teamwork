@@ -2,8 +2,6 @@ package models.backgrounds;
 
 import java.awt.image.BufferedImage;
 
-import gfx.Assets;
-
 public class MovingBackgroundState extends BackgroundState {
 	private int altitude;
 	private int startAltitude;

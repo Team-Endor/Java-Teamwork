@@ -22,9 +22,9 @@ public class GameState extends State {
 	private static final int SPAWN_INTERVAL = 20;
 
 	private static final int SPACE_END = 10000;
-	private static final int SPACE_STATRT = 8800;
-	private static final int AIR_END = 8000;
-	private static final int AIR_STATRT = 800;
+	private static final int SPACE_STATRT = 9000;
+	private static final int AIR_END = 8400;
+	private static final int AIR_STATRT = 600;
 	
 	public static final int BOARD_WIDTH = 800;
 	public static final int BOARD_HEIGHT = 600;
