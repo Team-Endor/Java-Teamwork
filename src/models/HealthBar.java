@@ -27,10 +27,6 @@ public class HealthBar extends Object {
     }
 
     @Override
-    public void tick(int gameVelocity) {
-    }
-
-    @Override
     public void render(Graphics graphics) {
         super.render(graphics);
         this.healthbarWidth = (int) (HEALTHBAR_WIDTH_MAX * (this.player.getHealth() / (double) Player.MaxHealth));

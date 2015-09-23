@@ -72,10 +72,6 @@ public class CreditsState extends State {
                 this.buttons.get(i).setIsHovered(false);
             }
         }
-
-        for (MenuButton button : this.buttons) {
-            button.tick(this.getVelocity());
-        }
     }
 
     @Override

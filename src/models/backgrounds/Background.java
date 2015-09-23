@@ -10,10 +10,6 @@ public class Background extends models.Object {
         super(0, 0, image);
     }
 
-    @Override
-    public void tick(int gameVelocity) {
-    }
-
     public void render(Graphics g) {
         g.drawImage(this.getImage(), this.getX(), this.getY(), null);
     }

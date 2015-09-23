@@ -30,6 +30,7 @@ public class GameState extends State {
     public static final int BOARD_HEIGHT = 600;
 
     private boolean isPaused;
+    private boolean hasWon;
 
     private static final Random random = new Random();
 
@@ -62,6 +63,8 @@ public class GameState extends State {
     public boolean getIsPaused() {
         return isPaused;
     }
+
+    public boolean getHasWon() {return this.hasWon;}
 
     public void setIsPaused(boolean isPaused) {
         this.isPaused = isPaused;
@@ -113,14 +116,13 @@ public class GameState extends State {
 
             this.player.tick((int) this.Velocity);
 
-            this.healthBar.tick(this.VelocityINT);
-
             if (!this.player.getIsAlive()) {
                 this.stateManager.setCurrentState(this.stateManager.getGameLostState());
             }
 
             if (this.DistanceLeft <= AIR_START) {
                 // victory
+                this.hasWon = true;
                 this.setIsPaused(true);
                 this.stateManager.setCurrentState(this.stateManager.getGameWonState());
             }

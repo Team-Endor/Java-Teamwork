@@ -48,8 +48,6 @@ public abstract class Object {
         return currentBoundingBox;
     }
 
-    public abstract void tick(int gameVelocity);
-
     public void render(Graphics graphics) {
         graphics.drawImage(this.getImage(), this.getX(), this.getY(), null);
     }

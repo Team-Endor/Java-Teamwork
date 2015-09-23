@@ -71,23 +71,23 @@ public abstract class MovableObject extends Object implements Movable {
         this.velocity = velocity;
     }
 
-    @Override
     public void tick(int gameVelocity) {
         if (this.isMovingUp()) {
-            this.move(0, -this.getVelocity() - gameVelocity);
+            this.move(0, -this.getVelocity());
         }
 
         if (this.isMovingDown()) {
-            this.move(0, this.getVelocity() - gameVelocity);
+            this.move(0, this.getVelocity());
         }
 
         if (this.isMovingLeft()) {
-            this.move(-this.getVelocity(), -gameVelocity);
+            this.move(-this.getVelocity(),0);
         }
 
         if (this.isMovingRight()) {
-            this.move(this.getVelocity(), -gameVelocity);
+            this.move(this.getVelocity(),0);
         }
+        this.move(0,-gameVelocity);
     }
 
     @Override

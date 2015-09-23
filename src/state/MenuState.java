@@ -48,10 +48,6 @@ public class MenuState extends State {
                 menuButtons.get(i).setIsHovered(false);
             }
         }
-
-        for (MenuButton button : this.menuButtons) {
-            button.tick(0);
-        }
     }
 
     @Override

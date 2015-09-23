@@ -3,6 +3,7 @@ package models;
 import game.Engine;
 import models.Object;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class MenuButton extends Object {
@@ -26,11 +27,12 @@ public class MenuButton extends Object {
     }
 
     @Override
-    public void tick(int gameVelocity) {
+    public void render(Graphics graphics) {
         if (this.isHovered()) {
             this.setImage(imageHovered);
         } else {
             this.setImage(imageInactive);
         }
+        super.render(graphics);
     }
 }
