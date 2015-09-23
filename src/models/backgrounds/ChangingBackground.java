@@ -26,7 +26,7 @@ public class ChangingBackground {
 	}
 
 	public void updateAltitude(int altitude) {
-		if (this.currentState.isViewed(altitude)) {
+		if (!this.currentState.isViewed(altitude)) {
 			for (MovingBackgroundState movingBackgroundState : this.states) {
 				if (movingBackgroundState.isViewed(altitude)) {
 					this.currentState = movingBackgroundState;
@@ -36,6 +36,7 @@ public class ChangingBackground {
 
 		this.currentState.updateAltitude(altitude);
 
+		altitude -= GameState.BOARD_HEIGHT;
 		if (!this.nextState.isViewed(altitude)) {
 			for (MovingBackgroundState movingBackgroundState : this.states) {
 				if (movingBackgroundState.isViewed(altitude)) {

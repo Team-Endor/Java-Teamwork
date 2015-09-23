@@ -1,19 +1,16 @@
 package models.enemies;
 
-import interfaces.Destroyable;
 import interfaces.Killable;
 import models.MovableObject;
 
 import java.awt.image.BufferedImage;
 
-public abstract class Enemy extends MovableObject implements Killable, Destroyable {
+public abstract class Enemy extends MovableObject implements Killable{
 	private boolean isAlive;
-	private boolean toDestroy;
 
 	protected Enemy(int x, int y, BufferedImage image, int velocity) {
 		super(x, y, image, velocity);
 		this.isAlive = true;
-		this.toDestroy = false;
 	}
 
 	public void setIsAlive(boolean isAlive) {
@@ -33,14 +30,6 @@ public abstract class Enemy extends MovableObject implements Killable, Destroyab
 		return this.isAlive;
 	}
 
-	@Override
-	public void setForDestruction() {
-		this.toDestroy = true;
-	}
 
-	@Override
-	public boolean isSetForDestruction() {
-		// TODO: remove the check for isAlive if we have death animation
-		return this.toDestroy || !this.isAlive;
-	}
+
 }

@@ -2,8 +2,6 @@ package models.backgrounds;
 
 import java.awt.image.BufferedImage;
 
-import gfx.Assets;
-
 public class MovingBackgroundState extends BackgroundState {
 	private int altitude;
 	private int startAltitude;
@@ -25,6 +23,6 @@ public class MovingBackgroundState extends BackgroundState {
 	}
 
 	public boolean isViewed(int altitude) {
-		return (altitude >= this.startAltitude && altitude <= this.endAltitude);
+		return (altitude <= this.startAltitude && altitude >= this.endAltitude);
 	}
 }

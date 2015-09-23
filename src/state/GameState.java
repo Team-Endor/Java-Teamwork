@@ -21,25 +21,24 @@ public class GameState extends State {
     private static final int MIN_SPAWN_TIME    = 20;
     private static final int SPAWN_INTERVAL    = 20;
 
-    private static final int SPACE_END    = 10000;
-    private static final int SPACE_STATRT = 8800;
-    private static final int AIR_END      = 8000;
-    private static final int AIR_STATRT   = 800;
+    private static final int SPACE_END   = 150000;
+    private static final int SPACE_START = 102600;
+    private static final int AIR_END     = 102000;
+    private static final int AIR_START   = -600;
 
     public static final int BOARD_WIDTH  = 800;
     public static final int BOARD_HEIGHT = 600;
 
-    private static final Random random = new Random();
-
     private boolean isPaused;
+
+    private static final Random random = new Random();
 
     private StateManager stateManager;
 
-    private int nextEnemyTimer;
-
-    private double Velocity   ;
+    private int    nextEnemyTimer;
+    private double Velocity;
     private int    VelocityINT;
-    private int DistanceTraveled;
+    private int    DistanceLeft;
 
     private ChangingBackground background;
     private HealthBar          healthBar;
@@ -49,6 +48,7 @@ public class GameState extends State {
     private List<Explosion> explosions;
     private List<Explosion> explosionsToRemove;
     private List<Enemy>     enemies;
+    private List<Enemy>     enemiesToRemove;
 
     public GameState(StateManager stateManager) {
         this.stateManager = stateManager;
@@ -69,128 +69,120 @@ public class GameState extends State {
 
     public void init() {
         this.background = new ChangingBackground();// Assets.background);
-        this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpace, SPACE_STATRT, SPACE_END));
-        this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpaceAtmosphere, AIR_END, SPACE_STATRT));
-		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundAtmosphere, AIR_STATRT, AIR_END));
-		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundGround, 0, AIR_STATRT));
+        this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpace, SPACE_END, SPACE_START));
+        this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpaceAtmosphere, SPACE_START, AIR_END));
+        this.background.pushBackState(new MovingBackgroundState(Assets.backgroundAtmosphere, AIR_END, AIR_START));
+        this.background.pushBackState(new MovingBackgroundState(Assets.backgroundGround, AIR_START, 0));
 
-		this.player = PlayerFactory.generatePlayer();
-		this.healthBar = new HealthBar(this.getPlayer());
+        this.player = PlayerFactory.generatePlayer();
+        this.healthBar = new HealthBar(this.getPlayer());
 
-		this.explosions = new ArrayList<>();
-		this.enemies = new ArrayList<>();
+        this.explosions = new ArrayList<>();
+        this.enemies = new ArrayList<>();
 
-		this.explosionsToRemove = new ArrayList<>();
-
-        this.DistanceTraveled = 1;
-        this.Velocity = 5;
-        this.VelocityINT = 5;
+        this.enemiesToRemove = new ArrayList<>();
+        this.explosionsToRemove = new ArrayList<>();
 
         this.nextEnemyTimer = 0;
+        this.Velocity = 5;
+        this.VelocityINT = 5;
+        this.DistanceLeft = 150000;
+    }
 
-        this.setIsPaused(false);
-	}
+    @Override
+    public void tick() {
+        if (!getIsPaused()) {
+            this.background.updateAltitude(this.DistanceLeft);
 
-	@Override
-	public void tick() {
-		if (!getIsPaused()) {
-			this.background.updateAltitude(SPACE_END - this.DistanceTraveled);
+            explosionsToRemove.clear();
+            for (Explosion explosion : explosions) {
+                explosion.tick(this.VelocityINT);
+                if (!explosion.getIsAlive()) {
+                    explosionsToRemove.add(explosion);
+                }
+            }
+            if (explosionsToRemove.size() > 0) {
+                explosions.removeAll(explosionsToRemove);
+            }
 
-			explosionsToRemove.clear();
-			for (Explosion explosion : explosions) {
-				explosion.tick(this.VelocityINT);
-				if (!explosion.getIsAlive()) {
-					explosionsToRemove.add(explosion);
-				}
-			}
-			if (explosionsToRemove.size() > 0) {
-				explosions.removeAll(explosionsToRemove);
-			}
+            this.processEnemies();
 
-			this.processCollision();
+            this.removeDestoyedEnemies();
 
-			this.removeDestoyedEnemies();
+            this.spawnEnemy();
 
-			this.spawnEnemy();
+            this.player.tick((int) this.Velocity);
 
-			this.player.tick((int) this.Velocity);
+            this.healthBar.tick(this.VelocityINT);
 
-			this.healthBar.tick(this.VelocityINT);
+            if (!this.player.getIsAlive()) {
+                this.stateManager.setCurrentState(this.stateManager.getGameLostState());
+            }
 
-			if (!this.player.getIsAlive()) {
-				this.stateManager.setCurrentState(this.stateManager.getGameLostState());
-			}
-
-			if (this.DistanceTraveled >= SPACE_END) {
-				// victory
-				//System.out.println("Victory");
+            if (this.DistanceLeft <= AIR_START) {
+                // victory
                 this.setIsPaused(true);
-				this.stateManager.setCurrentState(this.stateManager.getGameWonState());
+                this.stateManager.setCurrentState(this.stateManager.getGameWonState());
+            }
 
-			}
+            this.Velocity += 0.01;
+            this.VelocityINT = (int) Velocity;
+            this.DistanceLeft -= this.VelocityINT;
+        }
+    }
 
-			this.Velocity += 0.01;
-			this.VelocityINT = (int) Velocity;
-			this.DistanceTraveled += this.VelocityINT;
-		}
-	}
+    @Override
+    public void render(Graphics graphics) {
+        // Begin drawing
+        this.background.render(graphics);
 
-	@Override
-	public void render(Graphics graphics) {
-		// Begin drawing
-		this.background.render(graphics);
+        for (Explosion explosion : explosions) {
+            explosion.render(graphics);
+        }
 
-		for (Explosion explosion : explosions) {
-			explosion.render(graphics);
-		}
+        for (Enemy enemy : enemies) {
+            enemy.render(graphics);
+        }
 
-		for (Enemy enemy : enemies) {
-			enemy.render(graphics);
-		}
+        this.player.render(graphics);
 
-		this.player.render(graphics);
+        this.healthBar.render(graphics);
+        graphics.drawString(String.format("DISTANCE: %d", this.DistanceLeft), 608, 110);
+    }
 
-		this.healthBar.render(graphics);
-		graphics.drawString(String.format("DISTANCE: %d", this.DistanceTraveled), 608, 110);
-	}
+    private void processEnemies() {
+        for (int i = 0; i < this.enemies.size(); ++i) {
+            Enemy enemy = this.enemies.get(i);
 
-	private void processCollision() {
-		for (int i = 0; i < this.enemies.size(); ++i) {
-			Enemy enemy = this.enemies.get(i);
+            enemy.tick(this.VelocityINT);
 
-			enemy.tick(this.VelocityINT);
+            if (CollisionDetector.intersects(this.player.getBoundingBox(), enemy.getBoundingBox())) {
+                this.player.setHealth(this.player.getHealth() - 25);
+                System.out.println(this.player.getHealth());
+                this.explosions.add(ExplosionsFactory.createExplosion(enemy.getX(), enemy.getY()));
+                enemy.setIsAlive(false);
+            }
 
-			if (CollisionDetector.intersects(this.player.getBoundingBox(), enemy.getBoundingBox())) {
-				this.player.setHealth(this.player.getHealth() - 25);
-				System.out.println(this.player.getHealth());
-				this.explosions.add(ExplosionsFactory.createExplosion(enemy.getX(), enemy.getY()));
-				enemy.setIsAlive(false);
-			}
+            if (!enemy.getIsAlive()) {
+                enemiesToRemove.add(enemy);
+            }
+        }
+    }
 
-			// TODO: move isOnScreen method?
-			if (!enemy.isOnScreen()) {
-				enemy.setForDestruction();
-			}
-		}
-	}
+    private void removeDestoyedEnemies() {
+        if (enemiesToRemove.size() > 0) {
+            this.enemies.removeAll(enemiesToRemove);
+        }
+    }
 
-	private void removeDestoyedEnemies() {
-		for (int i = 0; i < this.enemies.size(); ++i) {
-			if (this.enemies.get(i).isSetForDestruction()) {
-				this.enemies.remove(i);
-				--i;
-			}
-		}
-	}
+    private void spawnEnemy() {
+        if (this.enemies.size() < MAX_ENEMIES_COUNT) {
+            --nextEnemyTimer;
+            if (nextEnemyTimer <= 0) {
+                this.enemies.add(RandomEnemyFactory.generateEnemy());
 
-	private void spawnEnemy() {
-		if (this.enemies.size() < MAX_ENEMIES_COUNT) {
-			--nextEnemyTimer;
-			if (nextEnemyTimer <= 0) {
-				this.enemies.add(RandomEnemyFactory.generateEnemy());
-
-				nextEnemyTimer = MIN_SPAWN_TIME + this.random.nextInt(SPAWN_INTERVAL);
-			}
-		}
-	}
+                nextEnemyTimer = MIN_SPAWN_TIME + this.random.nextInt(SPAWN_INTERVAL);
+            }
+        }
+    }
 }
