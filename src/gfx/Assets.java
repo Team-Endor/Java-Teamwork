@@ -15,7 +15,8 @@ public class Assets {
 
     public static BufferedImage mainMenuBackground;
     public static BufferedImage mainMenuPlay, mainMenuCredits, mainMenuSettings, mainMenuExit;
-    public static BufferedImage mainMenuInactivePlay, mainMenuInactiveCredits, mainMenuInactiveSettings, mainMenuInactiveExit;
+    public static BufferedImage mainMenuInactivePlay, mainMenuInactiveCredits, mainMenuInactiveSettings,
+            mainMenuInactiveExit;
 
     public static BufferedImage gameWonBackground, gameLostBackground;
     public static BufferedImage endGamePlayAgain, endGameBackToMenu, endGameExit;

@@ -3,7 +3,6 @@ package models.factories;
 import java.util.Random;
 
 import models.enemies.Enemy;
-import models.enemies.GroundRocket;
 
 public class RandomEnemyFactory {
 	private static final int Cases = 4;
@@ -27,7 +26,6 @@ public class RandomEnemyFactory {
 				return GroundRocketsFactory.generateGroundRocket();
 
 			default:
-				// TODO: throw exception?
 				return AirplanesFactory.generateAirplane();
 		}
 	}

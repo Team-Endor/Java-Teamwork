@@ -8,7 +8,7 @@ public class Display extends Canvas {
     private int    height;
     private String title;
 
-    private JFrame frame;     // Property frame of the game. The Canvas will wi inside.
+    private JFrame frame;
     private Canvas canvas;
 
     public Display(String title, int width, int height) {
@@ -27,7 +27,7 @@ public class Display extends Canvas {
         return this.frame;
     }
 
-    private void createFrame() { //Creates the frame
+    private void createFrame() {
         frame = new JFrame(this.title);
 
         // Jrame settings:

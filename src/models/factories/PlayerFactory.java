@@ -16,9 +16,7 @@ public class PlayerFactory {
     private static final int           PLAYER_HEALTH   = Player.MaxHealth;
 
     public static Player generatePlayer() {
-        Player createdPlayer = new Player(PLAYER_X, PLAYER_Y, PLAYER_IMAGE,
-                PLAYER_VELOCITY,
-                PLAYER_HEALTH);
+        Player createdPlayer = new Player(PLAYER_X, PLAYER_Y, PLAYER_IMAGE, PLAYER_VELOCITY, PLAYER_HEALTH);
 
         return createdPlayer;
     }

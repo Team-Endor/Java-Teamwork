@@ -9,7 +9,7 @@ public class MovingBackgroundState extends BackgroundState {
 
 	public MovingBackgroundState(BufferedImage image, int startAltitude, int endAltitude) {
 		super(image);
-		
+
 		this.startAltitude = startAltitude;
 		this.endAltitude = endAltitude;
 	}

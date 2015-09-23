@@ -10,7 +10,7 @@ public abstract class MovableObject extends Object implements Movable {
     private boolean isMovingDown;
     private boolean isMovingLeft;
     private boolean isMovingRight;
-    private int velocity;
+    private int     velocity;
 
     protected MovableObject(int x, int y, BufferedImage image, int velocity) {
         super(x, y, image);
@@ -95,9 +95,10 @@ public abstract class MovableObject extends Object implements Movable {
         this.setX(this.getX() + deltaX);
         this.setY(this.getY() + deltaY);
     }
-    
+
     public boolean isOnScreen() {
-		return this.getX() + this.getImage().getWidth() > 0 && this.getX() < GameState.BOARD_WIDTH
-				&& this.getY() + this.getImage().getHeight() > 0 && this.getY() < GameState.BOARD_HEIGHT;
-	}
+        return this.getX() + this.getImage().getWidth() > 0 && this.getX() < GameState.BOARD_WIDTH && this.getY() + this
+                .getImage()
+                .getHeight() > 0 && this.getY() < GameState.BOARD_HEIGHT;
+    }
 }

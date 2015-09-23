@@ -8,8 +8,8 @@ import state.GameState;
 import java.awt.image.BufferedImage;
 
 public class Player extends MovableObject implements Killable {
-    private        boolean isAlive;
-    private        int     health;
+    private boolean isAlive;
+    private int     health;
     private static final int METEOR_WIDTH   = 80;
     private static final int METEOR_HEIGHT  = 110;
     private static       int animationFrame = 0;

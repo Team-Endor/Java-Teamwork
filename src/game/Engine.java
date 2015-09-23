@@ -57,6 +57,7 @@ public class Engine implements Runnable {
     private void render() {
 
         this.graphics = this.bufferStrategy.getDrawGraphics();
+
         // clear the last image of the player
         this.graphics.clearRect(0, 0, this.WINDOW_WIDTH, this.WINDOW_HEIGHT);
 
@@ -79,7 +80,7 @@ public class Engine implements Runnable {
         double deltaTime = 0;                           // how much time passed  between now and the last time it ticked
         long now;
         long lastTimeTicked = System.nanoTime();        // the value of current time
-                                                        // (years/months/days/hours/minutes/seconds) in nano seconds
+        // (years/months/days/hours/minutes/seconds) in nano seconds
 
         while (isRunning) {
             now = System.nanoTime();
@@ -98,18 +99,16 @@ public class Engine implements Runnable {
     }
 
     public synchronized void start() {
-        if (this.isRunning) {                        // Check whether the game is already running, not to create a
-        // second thread
+        if (this.isRunning) {
             return;
         }
         this.isRunning = true;
-        this.thread = new Thread(this);              // on this thread the game runs
+        this.thread = new Thread(this);
         this.thread.start();
     }
 
     public synchronized void stop() {
-        if (!this.isRunning) {                      // Check whether the game is already stopped, not to create an
-        // exception
+        if (!this.isRunning) {
             return;
         }
         this.isRunning = false;

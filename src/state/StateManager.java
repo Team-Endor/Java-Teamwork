@@ -23,7 +23,7 @@ public class StateManager {
     private GameStateInputHandler     gameStateInputHandler;
     private MenuStateInputHandler     menuStateInputHandler;
     private GameEndScreenInputHandler gameEndStateInputHandler;
-    private CreditsStateInputHandler creditsStateInputHandler;
+    private CreditsStateInputHandler  creditsStateInputHandler;
 
     private State currentState;
 

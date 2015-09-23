@@ -35,7 +35,7 @@ public class MenuStateInputHandler extends InputHandler {
         }
         if (this.keyCode == KeyEvent.VK_ENTER) {
             if (currentMenuState.getHoveredButtonIndex() == 0) {
-                if(!this.getStateManager().getGameState().getPlayer().getIsAlive()){
+                if (!this.getStateManager().getGameState().getPlayer().getIsAlive()) {
                     GameState newGameState = new GameState(this.getStateManager());
                     this.getStateManager().setGameState(newGameState);
                     this.getStateManager().setCurrentState(this.getStateManager().getGameState());

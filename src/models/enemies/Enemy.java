@@ -5,7 +5,7 @@ import models.MovableObject;
 
 import java.awt.image.BufferedImage;
 
-public abstract class Enemy extends MovableObject implements Killable{
+public abstract class Enemy extends MovableObject implements Killable {
 	private boolean isAlive;
 
 	protected Enemy(int x, int y, BufferedImage image, int velocity) {

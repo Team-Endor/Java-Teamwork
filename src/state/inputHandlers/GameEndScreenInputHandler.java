@@ -7,7 +7,7 @@ import state.StateManager;
 
 import java.awt.event.KeyEvent;
 
-public class GameEndScreenInputHandler extends InputHandler{
+public class GameEndScreenInputHandler extends InputHandler {
     private int keyCode;
 
     public GameEndScreenInputHandler(StateManager stateManager) {
@@ -23,7 +23,7 @@ public class GameEndScreenInputHandler extends InputHandler{
         this.keyCode = e.getKeyCode();
         State currentState = this.getStateManager().getCurrentState();
         GameEndState currentGameEndState;
-        if(currentState == this.getStateManager().getGameLostState()){
+        if (currentState == this.getStateManager().getGameLostState()) {
             currentGameEndState = this.getStateManager().getGameLostState();
         } else {
             currentGameEndState = this.getStateManager().getGameWonState();

@@ -4,7 +4,6 @@ import game.Engine;
 import gfx.Assets;
 import models.MenuButton;
 import models.backgrounds.Background;
-import models.factories.GameEndScreenFactory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CreditsState extends State{
+public class CreditsState extends State {
     private static final BufferedImage BACK_TO_MENU_BUTTON_HOVERED_IMAGE  = Assets.endGameBackToMenu;
     private static final BufferedImage BACK_TO_MENU_BUTTON_INACTIVE_IMAGE = Assets.endGameInactiveBackToMenu;
 

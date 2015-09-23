@@ -13,7 +13,6 @@ public class CreditsStateInputHandler extends InputHandler {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
     }
 
     @Override
@@ -27,6 +26,5 @@ public class CreditsStateInputHandler extends InputHandler {
 
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 }
