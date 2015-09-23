@@ -2,10 +2,7 @@ package state;
 
 import display.Display;
 import game.Engine;
-import state.inputHandlers.GameEndScreenInputHandler;
-import state.inputHandlers.GameStateInputHandler;
-import state.inputHandlers.InputHandler;
-import state.inputHandlers.MenuStateInputHandler;
+import state.inputHandlers.*;
 
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -20,11 +17,13 @@ public class StateManager {
     private MenuState     menuState;
     private GameWonState  gameWonState;
     private GameLostState gameLostState;
+    private CreditsState  creditsState;
     private ExitGameState exitGameState;
 
-    private GameStateInputHandler gameStateInputHandler;
-    private MenuStateInputHandler menuStateInputHandler;
+    private GameStateInputHandler     gameStateInputHandler;
+    private MenuStateInputHandler     menuStateInputHandler;
     private GameEndScreenInputHandler gameEndStateInputHandler;
+    private CreditsStateInputHandler creditsStateInputHandler;
 
     private State currentState;
 
@@ -35,17 +34,20 @@ public class StateManager {
         this.menuState = new MenuState();
         this.gameWonState = new GameWonState();
         this.gameLostState = new GameLostState();
+        this.creditsState = new CreditsState();
         this.exitGameState = new ExitGameState(this.engine);
 
         this.gameStateInputHandler = new GameStateInputHandler(this);
         this.menuStateInputHandler = new MenuStateInputHandler(this);
         this.gameEndStateInputHandler = new GameEndScreenInputHandler(this);
+        this.creditsStateInputHandler = new CreditsStateInputHandler(this);
 
         this.inputHandlers.put("GameState", this.gameStateInputHandler);
         this.inputHandlers.put("MenuState", this.menuStateInputHandler);
         this.inputHandlers.put("ExitGameState", null);
         this.inputHandlers.put("GameWonState", this.gameEndStateInputHandler);
         this.inputHandlers.put("GameLostState", this.gameEndStateInputHandler);
+        this.inputHandlers.put("CreditsState", this.creditsStateInputHandler);
 
         this.setCurrentState(this.menuState);
     }
@@ -64,6 +66,10 @@ public class StateManager {
 
     public MenuState getMenuState() {
         return this.menuState;
+    }
+
+    public CreditsState getCreditsState() {
+        return this.creditsState;
     }
 
     public GameWonState getGameWonState() {

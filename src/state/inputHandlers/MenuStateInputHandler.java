@@ -44,6 +44,9 @@ public class MenuStateInputHandler extends InputHandler {
                     this.getStateManager().setCurrentState(this.getStateManager().getGameState());
                 }
             }
+            if (currentMenuState.getHoveredButtonIndex() == 1) {
+                this.getStateManager().setCurrentState(this.getStateManager().getCreditsState());
+            }
             if (currentMenuState.getHoveredButtonIndex() == 3) {
                 this.getStateManager().setCurrentState(this.getStateManager().getExitGameState());
             }

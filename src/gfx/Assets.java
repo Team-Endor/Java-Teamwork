@@ -21,6 +21,7 @@ public class Assets {
     public static BufferedImage endGamePlayAgain, endGameBackToMenu, endGameExit;
     public static BufferedImage endGameInactivePlayAgain, endGameInactiveBackToMenu, endGameInactiveExit;
 
+    public static BufferedImage creditsBackground;
 
     public static void init() {
         meteor = new SpriteSheet(ImageLoader.loadImage("/images/meteor.png"));
@@ -67,5 +68,8 @@ public class Assets {
         endGameInactivePlayAgain = ImageLoader.loadImage("/images/end-game-screen/endGamePlayAgainInactive.png");
         endGameInactiveBackToMenu = ImageLoader.loadImage("/images/end-game-screen/endGameBackToMenuInactive.png");
         endGameInactiveExit = ImageLoader.loadImage("/images/end-game-screen/endGameExitInactive.png");
+
+        //load credits background
+        creditsBackground = ImageLoader.loadImage("/images/Credits.jpg");
     }
 }
