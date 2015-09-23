@@ -1,5 +1,6 @@
 package state.inputHandlers;
 
+import state.GameState;
 import state.MenuState;
 import state.StateManager;
 
@@ -34,8 +35,14 @@ public class MenuStateInputHandler extends InputHandler {
         }
         if (this.keyCode == KeyEvent.VK_ENTER) {
             if (currentMenuState.getHoveredButtonIndex() == 0) {
-                this.getStateManager().getGameState().setIsPaused(false);
-                this.getStateManager().setCurrentState(this.getStateManager().getGameState());
+                if(!this.getStateManager().getGameState().getPlayer().getIsAlive()){
+                    GameState newGameState = new GameState(this.getStateManager());
+                    this.getStateManager().setGameState(newGameState);
+                    this.getStateManager().setCurrentState(this.getStateManager().getGameState());
+                } else {
+                    this.getStateManager().getGameState().setIsPaused(false);
+                    this.getStateManager().setCurrentState(this.getStateManager().getGameState());
+                }
             }
             if (currentMenuState.getHoveredButtonIndex() == 3) {
                 this.getStateManager().setCurrentState(this.getStateManager().getExitGameState());

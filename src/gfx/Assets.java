@@ -17,6 +17,10 @@ public class Assets {
     public static BufferedImage mainMenuPlay, mainMenuCredits, mainMenuSettings, mainMenuExit;
     public static BufferedImage mainMenuInactivePlay, mainMenuInactiveCredits, mainMenuInactiveSettings, mainMenuInactiveExit;
 
+    public static BufferedImage gameWonBackground, gameLostBackground;
+    public static BufferedImage endGamePlayAgain, endGameBackToMenu, endGameExit;
+    public static BufferedImage endGameInactivePlayAgain, endGameInactiveBackToMenu, endGameInactiveExit;
+
 
     public static void init() {
         meteor = new SpriteSheet(ImageLoader.loadImage("/images/meteor.png"));
@@ -51,5 +55,17 @@ public class Assets {
         mainMenuInactiveCredits = ImageLoader.loadImage("/images/main-menu/credits-inactive.png");
         mainMenuInactiveSettings = ImageLoader.loadImage("/images/main-menu/settings-inactive.png");
         mainMenuInactiveExit = ImageLoader.loadImage("/images/main-menu/exit-inactive.png");
+
+        // load gameEnd screen elements
+        gameLostBackground = ImageLoader.loadImage("/images/end-game-screen/gamelost-background.png");
+        gameWonBackground = ImageLoader.loadImage("/images/end-game-screen/gamewon-background.png");
+
+        endGamePlayAgain = ImageLoader.loadImage("/images/end-game-screen/endGamePlayAgain.png");
+        endGameBackToMenu = ImageLoader.loadImage("/images/end-game-screen/endGameBackToMenu.png");
+        endGameExit = ImageLoader.loadImage("/images/end-game-screen/endGameExit.png");
+
+        endGameInactivePlayAgain = ImageLoader.loadImage("/images/end-game-screen/endGamePlayAgainInactive.png");
+        endGameInactiveBackToMenu = ImageLoader.loadImage("/images/end-game-screen/endGameBackToMenuInactive.png");
+        endGameInactiveExit = ImageLoader.loadImage("/images/end-game-screen/endGameExitInactive.png");
     }
 }

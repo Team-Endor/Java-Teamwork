@@ -9,15 +9,14 @@ import java.awt.image.BufferedImage;
 
 public class Player extends MovableObject implements Killable {
     private        boolean isAlive;
-    private static Player  instance;
     private        int     health;
     private static final int METEOR_WIDTH   = 80;
     private static final int METEOR_HEIGHT  = 110;
     private static       int animationFrame = 0;
 
-    public static final int MaxHealth = 1000;
+    public static final int MaxHealth = 100;
 
-    private Player(int x, int y, BufferedImage image, int velocity, int health) {
+    public Player(int x, int y, BufferedImage image, int velocity, int health) {
         super(x, y, image, velocity);
 
         this.setHealth(health);
@@ -39,13 +38,6 @@ public class Player extends MovableObject implements Killable {
     @Override
     public boolean getIsAlive() {
         return this.health > 0;
-    }
-
-    public static Player createInstance(int x, int y, BufferedImage image, int velocity, int health) {
-        if (instance == null) {
-            instance = new Player(x, y, image, velocity, health);
-        }
-        return instance;
     }
 
     @Override

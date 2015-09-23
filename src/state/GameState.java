@@ -17,60 +17,60 @@ import java.util.List;
 import java.util.Random;
 
 public class GameState extends State {
-	private static final int MAX_ENEMIES_COUNT = 5;
-	private static final int MIN_SPAWN_TIME = 20;
-	private static final int SPAWN_INTERVAL = 20;
+    private static final int MAX_ENEMIES_COUNT = 5;
+    private static final int MIN_SPAWN_TIME    = 20;
+    private static final int SPAWN_INTERVAL    = 20;
 
-	private static final int SPACE_END = 10000;
-	private static final int SPACE_STATRT = 8800;
-	private static final int AIR_END = 8000;
-	private static final int AIR_STATRT = 800;
-	
-	public static final int BOARD_WIDTH = 800;
-	public static final int BOARD_HEIGHT = 600;
+    private static final int SPACE_END    = 10000;
+    private static final int SPACE_STATRT = 8800;
+    private static final int AIR_END      = 8000;
+    private static final int AIR_STATRT   = 800;
 
-	private boolean isPaused;
+    public static final int BOARD_WIDTH  = 800;
+    public static final int BOARD_HEIGHT = 600;
 
-	private static final Random random = new Random();
+    private static final Random random = new Random();
 
-	private StateManager stateManager;
+    private boolean isPaused;
 
-	private int nextEnemyTimer = 0;
+    private StateManager stateManager;
 
-	private double Velocity = 5;
-	private int VelocityINT = 5;
-	private int DistanceTraveled = 1;
+    private int nextEnemyTimer;
 
-	private ChangingBackground background;
-	private HealthBar healthBar;
+    private double Velocity   ;
+    private int    VelocityINT;
+    private int DistanceTraveled;
 
-	private static Player player;
+    private ChangingBackground background;
+    private HealthBar          healthBar;
 
-	private List<Explosion> explosions;
-	private List<Explosion> explosionsToRemove;
-	private List<Enemy> enemies;
+    private static Player player;
 
-	public GameState(StateManager stateManager) {
-		this.stateManager = stateManager;
-		this.init();
-	}
+    private List<Explosion> explosions;
+    private List<Explosion> explosionsToRemove;
+    private List<Enemy>     enemies;
 
-	public Player getPlayer() {
-		return player;
-	}
+    public GameState(StateManager stateManager) {
+        this.stateManager = stateManager;
+        this.init();
+    }
 
-	public boolean getIsPaused() {
-		return isPaused;
-	}
+    public Player getPlayer() {
+        return player;
+    }
 
-	public void setIsPaused(boolean isPaused) {
-		this.isPaused = isPaused;
-	}
+    public boolean getIsPaused() {
+        return isPaused;
+    }
 
-	public void init() {
-		this.background = new ChangingBackground();// Assets.background);
-		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpace, SPACE_STATRT, SPACE_END));
-		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpaceAtmosphere, AIR_END, SPACE_STATRT));
+    public void setIsPaused(boolean isPaused) {
+        this.isPaused = isPaused;
+    }
+
+    public void init() {
+        this.background = new ChangingBackground();// Assets.background);
+        this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpace, SPACE_STATRT, SPACE_END));
+        this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpaceAtmosphere, AIR_END, SPACE_STATRT));
 		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundAtmosphere, AIR_STATRT, AIR_END));
 		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundGround, 0, AIR_STATRT));
 
@@ -81,6 +81,14 @@ public class GameState extends State {
 		this.enemies = new ArrayList<>();
 
 		this.explosionsToRemove = new ArrayList<>();
+
+        this.DistanceTraveled = 1;
+        this.Velocity = 5;
+        this.VelocityINT = 5;
+
+        this.nextEnemyTimer = 0;
+
+        this.setIsPaused(false);
 	}
 
 	@Override
@@ -110,13 +118,15 @@ public class GameState extends State {
 			this.healthBar.tick(this.VelocityINT);
 
 			if (!this.player.getIsAlive()) {
-				this.stateManager.setCurrentState(this.stateManager.getGameOverState());
+				this.stateManager.setCurrentState(this.stateManager.getGameLostState());
 			}
 
 			if (this.DistanceTraveled >= SPACE_END) {
 				// victory
-				System.out.println("Victory");
-				this.setIsPaused(true);
+				//System.out.println("Victory");
+                this.setIsPaused(true);
+				this.stateManager.setCurrentState(this.stateManager.getGameWonState());
+
 			}
 
 			this.Velocity += 0.01;

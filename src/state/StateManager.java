@@ -2,6 +2,7 @@ package state;
 
 import display.Display;
 import game.Engine;
+import state.inputHandlers.GameEndScreenInputHandler;
 import state.inputHandlers.GameStateInputHandler;
 import state.inputHandlers.InputHandler;
 import state.inputHandlers.MenuStateInputHandler;
@@ -11,17 +12,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StateManager {
-    Map<State, InputHandler> inputHandlers = new HashMap<>();
+    Map<String, InputHandler> inputHandlers = new HashMap<>();
 
     private Engine engine;
 
     private GameState     gameState;
     private MenuState     menuState;
-    private GameOverState gameOverState;
+    private GameWonState  gameWonState;
+    private GameLostState gameLostState;
     private ExitGameState exitGameState;
 
     private GameStateInputHandler gameStateInputHandler;
     private MenuStateInputHandler menuStateInputHandler;
+    private GameEndScreenInputHandler gameEndStateInputHandler;
 
     private State currentState;
 
@@ -30,21 +33,29 @@ public class StateManager {
 
         this.gameState = new GameState(this);
         this.menuState = new MenuState();
-        this.gameOverState = new GameOverState();
+        this.gameWonState = new GameWonState();
+        this.gameLostState = new GameLostState();
         this.exitGameState = new ExitGameState(this.engine);
 
         this.gameStateInputHandler = new GameStateInputHandler(this);
         this.menuStateInputHandler = new MenuStateInputHandler(this);
+        this.gameEndStateInputHandler = new GameEndScreenInputHandler(this);
 
-        inputHandlers.put(this.gameState, this.gameStateInputHandler);
-        inputHandlers.put(this.menuState, this.menuStateInputHandler);
-        inputHandlers.put(this.exitGameState, null);
+        this.inputHandlers.put("GameState", this.gameStateInputHandler);
+        this.inputHandlers.put("MenuState", this.menuStateInputHandler);
+        this.inputHandlers.put("ExitGameState", null);
+        this.inputHandlers.put("GameWonState", this.gameEndStateInputHandler);
+        this.inputHandlers.put("GameLostState", this.gameEndStateInputHandler);
 
         this.setCurrentState(this.menuState);
     }
 
     public GameState getGameState() {
         return this.gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public ExitGameState getExitGameState() {
@@ -55,8 +66,12 @@ public class StateManager {
         return this.menuState;
     }
 
-    public GameOverState getGameOverState() {
-        return this.gameOverState;
+    public GameWonState getGameWonState() {
+        return gameWonState;
+    }
+
+    public GameLostState getGameLostState() {
+        return gameLostState;
     }
 
     public State getCurrentState() {
@@ -78,6 +93,6 @@ public class StateManager {
             }
         }
 
-        display.getCanvas().addKeyListener(inputHandlers.get(stateToSet));
+        display.getCanvas().addKeyListener(this.inputHandlers.get(stateToSet.getClass().getSimpleName()));
     }
 }
