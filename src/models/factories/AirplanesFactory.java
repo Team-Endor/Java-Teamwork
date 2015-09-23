@@ -11,7 +11,7 @@ import java.util.Random;
 public class AirplanesFactory {
     private static Random random = new Random();
 
-    private static final int AIRPLANE_SPAWN_X = GameState.BOARD_WIDTH;
+    private static final int AIRPLANE_SPAWN_X = 600;
     private static final int AIRPLANE_SPAWN_Y = GameState.BOARD_HEIGHT;
 
     private static final int AIRPLANE_WIDTH  = 150;
@@ -98,12 +98,12 @@ public class AirplanesFactory {
         }
 
         //int y = random.nextInt(AIRPLANE_SPAWN_Y) + AIRPLANE_SPAWN_Y;
-        int y = random.nextInt(AIRPLANE_SPAWN_Y - 2) + 1;// + AIRPLANE_SPAWN_Y;
+        int y = random.nextInt(AIRPLANE_SPAWN_Y) + AIRPLANE_SPAWN_Y;
         int x = 0;
         if(image < 4){
-            x = random.nextInt(AIRPLANE_SPAWN_X);
+            x = random.nextInt(AIRPLANE_SPAWN_X/2)+ AIRPLANE_SPAWN_X;
         }else{
-            x = random.nextInt(AIRPLANE_SPAWN_X/2);
+            x = random.nextInt(AIRPLANE_SPAWN_X) - AIRPLANE_SPAWN_X/2;
         }
 
         PassangerPlane createdAirplane = new PassangerPlane(x, y, airplaneImage, AIRPLANE_VELOCITY);
@@ -130,13 +130,13 @@ public class AirplanesFactory {
         }
 
         // int y = random.nextInt(AIRPLANE_SPAWN_Y) + AIRPLANE_SPAWN_Y;
-        int y = random.nextInt(AIRPLANE_SPAWN_Y - 2) + 1;// + AIRPLANE_SPAWN_Y;
+        int y = random.nextInt(AIRPLANE_SPAWN_Y) + AIRPLANE_SPAWN_Y;// + AIRPLANE_SPAWN_Y;
         int x = 0;
         if(image < 1){
-            x = random.nextInt(AIRPLANE_SPAWN_X);
+            x = random.nextInt(AIRPLANE_SPAWN_X/2)+ AIRPLANE_SPAWN_X;
 
         }else{
-            x = random.nextInt(AIRPLANE_SPAWN_X/2);
+            x = random.nextInt(AIRPLANE_SPAWN_X) - AIRPLANE_SPAWN_X/2;
         }
 
         FighterPlane createdFighterPlane = new FighterPlane(x, y, airplaneImage, FIGHTER_PLANE_VELOCITY);

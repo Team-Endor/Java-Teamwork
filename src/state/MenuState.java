@@ -9,7 +9,6 @@ import java.awt.*;
 import java.util.List;
 
 public class MenuState extends State {
-    private int velocity = 5;
 
     private Background background;
 
@@ -32,10 +31,6 @@ public class MenuState extends State {
         return this.menuButtons.size();
     }
 
-    private int getVelocity() {
-        return velocity;
-    }
-
     public void init() {
         this.background = new Background(Assets.mainMenuBackground);
 
@@ -55,7 +50,7 @@ public class MenuState extends State {
         }
 
         for (MenuButton button : this.menuButtons) {
-            button.tick(this.getVelocity());
+            button.tick(0);
         }
     }
 

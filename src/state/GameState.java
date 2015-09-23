@@ -21,10 +21,10 @@ public class GameState extends State {
 	private static final int MIN_SPAWN_TIME = 20;
 	private static final int SPAWN_INTERVAL = 20;
 
-	private static final int SPACE_END = 10000;
-	private static final int SPACE_STATRT = 9000;
-	private static final int AIR_END = 8400;
-	private static final int AIR_STATRT = 600;
+	private static final int SPACE_END = 150000;
+	private static final int SPACE_START = 102600;
+	private static final int AIR_END = 102000;
+	private static final int AIR_START = -600;
 	
 	public static final int BOARD_WIDTH = 800;
 	public static final int BOARD_HEIGHT = 600;
@@ -39,7 +39,7 @@ public class GameState extends State {
 
 	private double Velocity = 5;
 	private int VelocityINT = 5;
-	private int DistanceTraveled = 1;
+	private int DistanceLeft = 150000;
 
 	private ChangingBackground background;
 	private HealthBar healthBar;
@@ -49,6 +49,7 @@ public class GameState extends State {
 	private List<Explosion> explosions;
 	private List<Explosion> explosionsToRemove;
 	private List<Enemy> enemies;
+	private List<Enemy> enemiesToRemove;
 
 	public GameState(StateManager stateManager) {
 		this.stateManager = stateManager;
@@ -69,10 +70,10 @@ public class GameState extends State {
 
 	public void init() {
 		this.background = new ChangingBackground();// Assets.background);
-		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpace, SPACE_STATRT, SPACE_END));
-		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpaceAtmosphere, AIR_END, SPACE_STATRT));
-		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundAtmosphere, AIR_STATRT, AIR_END));
-		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundGround, 0, AIR_STATRT));
+		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpace,SPACE_END,SPACE_START));
+		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundSpaceAtmosphere,  SPACE_START,AIR_END));
+		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundAtmosphere,AIR_END, AIR_START ));
+		this.background.pushBackState(new MovingBackgroundState(Assets.backgroundGround, AIR_START,0));
 
 		this.player = PlayerFactory.generatePlayer();
 		this.healthBar = new HealthBar(this.getPlayer());
@@ -80,13 +81,14 @@ public class GameState extends State {
 		this.explosions = new ArrayList<>();
 		this.enemies = new ArrayList<>();
 
+		this.enemiesToRemove = new ArrayList<>();
 		this.explosionsToRemove = new ArrayList<>();
 	}
 
 	@Override
 	public void tick() {
 		if (!getIsPaused()) {
-			this.background.updateAltitude(SPACE_END - this.DistanceTraveled);
+			this.background.updateAltitude(this.DistanceLeft);
 
 			explosionsToRemove.clear();
 			for (Explosion explosion : explosions) {
@@ -99,7 +101,7 @@ public class GameState extends State {
 				explosions.removeAll(explosionsToRemove);
 			}
 
-			this.processCollision();
+			this.processEnemies();
 
 			this.removeDestoyedEnemies();
 
@@ -113,7 +115,7 @@ public class GameState extends State {
 				this.stateManager.setCurrentState(this.stateManager.getGameOverState());
 			}
 
-			if (this.DistanceTraveled >= SPACE_END) {
+			if (this.DistanceLeft <= AIR_START) {
 				// victory
 				System.out.println("Victory");
 				this.setIsPaused(true);
@@ -121,7 +123,7 @@ public class GameState extends State {
 
 			this.Velocity += 0.01;
 			this.VelocityINT = (int) Velocity;
-			this.DistanceTraveled += this.VelocityINT;
+			this.DistanceLeft -= this.VelocityINT;
 		}
 	}
 
@@ -141,10 +143,10 @@ public class GameState extends State {
 		this.player.render(graphics);
 
 		this.healthBar.render(graphics);
-		graphics.drawString(String.format("DISTANCE: %d", this.DistanceTraveled), 608, 110);
+		graphics.drawString(String.format("DISTANCE: %d", this.DistanceLeft), 608, 110);
 	}
 
-	private void processCollision() {
+	private void processEnemies() {
 		for (int i = 0; i < this.enemies.size(); ++i) {
 			Enemy enemy = this.enemies.get(i);
 
@@ -157,19 +159,15 @@ public class GameState extends State {
 				enemy.setIsAlive(false);
 			}
 
-			// TODO: move isOnScreen method?
-			if (!enemy.isOnScreen()) {
-				enemy.setForDestruction();
+			if(!enemy.getIsAlive()){
+				enemiesToRemove.add(enemy);
 			}
 		}
 	}
 
 	private void removeDestoyedEnemies() {
-		for (int i = 0; i < this.enemies.size(); ++i) {
-			if (this.enemies.get(i).isSetForDestruction()) {
-				this.enemies.remove(i);
-				--i;
-			}
+		if(enemiesToRemove.size()>0){
+			this.enemies.removeAll(enemiesToRemove);
 		}
 	}
 

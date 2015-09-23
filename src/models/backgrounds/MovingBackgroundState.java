@@ -23,6 +23,6 @@ public class MovingBackgroundState extends BackgroundState {
 	}
 
 	public boolean isViewed(int altitude) {
-		return (altitude >= this.startAltitude && altitude <= this.endAltitude);
+		return (altitude <= this.startAltitude && altitude >= this.endAltitude);
 	}
 }

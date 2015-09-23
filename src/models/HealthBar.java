@@ -42,7 +42,9 @@ public class HealthBar extends Object {
                 null);
         Font font = new Font("Verdana", Font.BOLD, 12);
         graphics.setFont(font);
+        graphics.setColor(Color.white);
         String health = String.format("%d/%d", this.player.getHealth(), Player.MaxHealth);
         graphics.drawString(health, HEALTHBARNUMBER_X, HEALTHBARNUMBER_Y);
+        graphics.setColor(Color.red);
     }
 }

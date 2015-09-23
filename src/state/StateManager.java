@@ -2,6 +2,7 @@ package state;
 
 import display.Display;
 import game.Engine;
+import state.inputHandlers.GameOverStateInputHandler;
 import state.inputHandlers.GameStateInputHandler;
 import state.inputHandlers.InputHandler;
 import state.inputHandlers.MenuStateInputHandler;
@@ -22,6 +23,7 @@ public class StateManager {
 
     private GameStateInputHandler gameStateInputHandler;
     private MenuStateInputHandler menuStateInputHandler;
+    private GameOverStateInputHandler gameOverStateInputHandler;
 
     private State currentState;
 
@@ -35,9 +37,11 @@ public class StateManager {
 
         this.gameStateInputHandler = new GameStateInputHandler(this);
         this.menuStateInputHandler = new MenuStateInputHandler(this);
+        this.gameOverStateInputHandler = new GameOverStateInputHandler(this);
 
         inputHandlers.put(this.gameState, this.gameStateInputHandler);
         inputHandlers.put(this.menuState, this.menuStateInputHandler);
+        inputHandlers.put(this.gameOverState,this.gameOverStateInputHandler);
         inputHandlers.put(this.exitGameState, null);
 
         this.setCurrentState(this.menuState);
