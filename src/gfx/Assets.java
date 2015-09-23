@@ -10,7 +10,6 @@ public class Assets {
     public static BufferedImage backgroundSpace, backgroundSpaceAtmosphere, backgroundAtmosphere, backgroundGround;
     public static BufferedImage healthbar;
     public static BufferedImage healthbarBorder;
-    public static BufferedImage gameOver;
     public static BufferedImage groundRocketFromLeft, groundRocketFromRight, groundRocketFromCenter;
 
     public static BufferedImage mainMenuBackground;
@@ -37,8 +36,6 @@ public class Assets {
 
         healthbar = ImageLoader.loadImage("/images/HealthBar.png");
         healthbarBorder = ImageLoader.loadImage("/images/HealthbarBorder.png");
-
-        gameOver = ImageLoader.loadImage("/images/GameOver.png");
 
         SpriteSheet groundRocketsSheet = new SpriteSheet(ImageLoader.loadImage("/images/ground-rockets.png"));
         groundRocketFromRight = groundRocketsSheet.crop(0, 4, 34, 34);
