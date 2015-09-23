@@ -14,7 +14,7 @@ public class Player extends MovableObject implements Killable {
     private static final int METEOR_HEIGHT  = 110;
     private static       int animationFrame = 0;
 
-    public static final int MaxHealth = 100;
+    public static final int MaxHealth = 1000;
 
     public Player(int x, int y, BufferedImage image, int velocity, int health) {
         super(x, y, image, velocity);

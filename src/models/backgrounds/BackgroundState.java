@@ -12,6 +12,4 @@ public abstract class BackgroundState {
 	public BufferedImage getImage() {
 		return this.image;
 	}
-	
-	//public abstract boolean isStateFinished();
 }

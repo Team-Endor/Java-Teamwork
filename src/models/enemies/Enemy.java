@@ -20,7 +20,7 @@ public abstract class Enemy extends MovableObject implements Killable{
 	@Override
 	public void tick(int gameVelocity) {
 		super.tick(gameVelocity);
-		if (this.getY() < 0) {
+		if (this.getY() + this.getImage().getHeight() < 0) {
 			this.setIsAlive(false);
 		}
 	}
@@ -29,7 +29,4 @@ public abstract class Enemy extends MovableObject implements Killable{
 	public boolean getIsAlive() {
 		return this.isAlive;
 	}
-
-
-
 }

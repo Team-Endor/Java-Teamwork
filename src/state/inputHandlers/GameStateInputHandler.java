@@ -29,7 +29,10 @@ public class GameStateInputHandler extends InputHandler {
         if (this.keyCode == KeyEvent.VK_RIGHT) {
             player.setIsMovingRight(true);
         }
-
+        // hack for testing purposes
+        if (this.keyCode == KeyEvent.VK_A) {
+            player.setHealth(player.getHealth() + 100);
+        }
     }
 
     @Override

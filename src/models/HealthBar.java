@@ -9,11 +9,11 @@ import java.awt.image.BufferedImage;
 public class HealthBar extends Object {
     private static final int HEALTHBARBORDER_X   = 600;
     private static final int HEALTHBARBORDER_Y   = 50;
-    private static final int HEALTHBAR_X         = 608;
-    private static final int HEALTHBAR_Y         = 72;
+    private static final int HEALTHBAR_X         = 604;
+    private static final int HEALTHBAR_Y         = 69;
     private static final int HEALTHBARNUMBER_X   = 658;
     private static final int HEALTHBARNUMBER_Y   = 82;
-    private static final int HEALTHBAR_WIDTH_MAX = 155;
+    private static final int HEALTHBAR_WIDTH_MAX = 162;
 
     private Player        player;
     private int           healthbarWidth;

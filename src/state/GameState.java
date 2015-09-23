@@ -21,10 +21,10 @@ public class GameState extends State {
     private static final int MIN_SPAWN_TIME    = 20;
     private static final int SPAWN_INTERVAL    = 20;
 
-    private static final int SPACE_END   = 150000;
+    private static final int SPACE_END   = 130000;
     private static final int SPACE_START = 102600;
     private static final int AIR_END     = 102000;
-    private static final int AIR_START   = -600;
+    private static final int AIR_START   = 600;
 
     public static final int BOARD_WIDTH  = 800;
     public static final int BOARD_HEIGHT = 600;
@@ -164,7 +164,7 @@ public class GameState extends State {
             }
 
             if (!enemy.getIsAlive()) {
-                enemiesToRemove.add(enemy);
+                this.enemiesToRemove.add(enemy);
             }
         }
     }
