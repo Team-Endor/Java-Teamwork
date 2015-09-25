@@ -1,15 +1,17 @@
 package state;
 
+import Constants.Constants;
 import gfx.Assets;
 import models.MenuButton;
 import models.backgrounds.Background;
 import models.factories.GameEndScreenFactory;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public abstract class GameEndState extends State {
-    private int velocity = 5;
-
+public abstract class GameEndState extends State{
+    private int keyCode;
     private Background background;
 
     java.util.List<MenuButton> buttons;
@@ -33,10 +35,6 @@ public abstract class GameEndState extends State {
 
     public int numberOfButtons() {
         return this.buttons.size();
-    }
-
-    private int getVelocity() {
-        return velocity;
     }
 
     public void init() {
@@ -65,5 +63,40 @@ public abstract class GameEndState extends State {
         for (MenuButton button : this.buttons) {
             button.render(graphics);
         }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        this.keyCode = e.getKeyCode();
+
+        if (this.keyCode == KeyEvent.VK_UP) {
+            if (this.getHoveredButtonIndex() > 0) {
+                this.setHoveredButtonIndex(this.getHoveredButtonIndex() - 1);
+            }
+        }
+        if (this.keyCode == KeyEvent.VK_DOWN) {
+            if (this.getHoveredButtonIndex() < this.buttons.size() - 1) {
+                this.setHoveredButtonIndex(this.getHoveredButtonIndex() + 1);
+            }
+        }
+        if (this.keyCode == KeyEvent.VK_ENTER) {
+            if (this.getHoveredButtonIndex() == 0) {
+               this.fireStateChangeEvent(Constants.GAME_STATE);
+            }
+            if (this.getHoveredButtonIndex() == 1) {
+                this.fireStateChangeEvent(Constants.MENU_STATE);
+            }
+            if (this.getHoveredButtonIndex() == 2) {
+                this.fireStateChangeEvent(Constants.EXIT_GAME_STATE);
+            }
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
     }
 }

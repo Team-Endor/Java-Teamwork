@@ -1,5 +1,6 @@
 package state;
 
+import Constants.Constants;
 import gfx.Assets;
 import models.*;
 import models.backgrounds.ChangingBackground;
@@ -12,59 +13,56 @@ import models.player.Player;
 import physics.CollisionDetector;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class GameState extends State {
     private static final int MAX_ENEMIES_COUNT = 5;
-    private static final int MIN_SPAWN_TIME    = 20;
-    private static final int SPAWN_INTERVAL    = 20;
+    private static final int MIN_SPAWN_TIME = 20;
+    private static final int SPAWN_INTERVAL = 20;
 
-    private static final int SPACE_END   = 130000;
+    private static final int SPACE_END = 150000;
     private static final int SPACE_START = 102600;
-    private static final int AIR_END     = 102000;
-    private static final int AIR_START   = 600;
+    private static final int AIR_END = 102000;
+    private static final int AIR_START = 600;
 
-    public static final int BOARD_WIDTH  = 800;
+    public static final int BOARD_WIDTH = 800;
     public static final int BOARD_HEIGHT = 600;
 
     private boolean isPaused;
-    private boolean hasWon;
+    private int keyCode;
 
     private static final Random random = new Random();
 
-    private StateManager stateManager;
-
-    private int    nextEnemyTimer;
+    private int nextEnemyTimer;
     private double Velocity;
-    private int    VelocityINT;
-    private int    DistanceLeft;
+    private int VelocityINT;
+    private int DistanceLeft;
 
     private ChangingBackground background;
-    private HealthBar          healthBar;
+    private HealthBar healthBar;
 
-    private static Player player;
+    private Player player;
 
     private List<Explosion> explosions;
     private List<Explosion> explosionsToRemove;
-    private List<Enemy>     enemies;
-    private List<Enemy>     enemiesToRemove;
+    private List<Enemy> enemies;
+    private List<Enemy> enemiesToRemove;
 
-    public GameState(StateManager stateManager) {
-        this.stateManager = stateManager;
+    public GameState() {
         this.init();
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public boolean getIsPaused() {
         return isPaused;
     }
-
-    public boolean getHasWon() {return this.hasWon;}
 
     public void setIsPaused(boolean isPaused) {
         this.isPaused = isPaused;
@@ -114,17 +112,16 @@ public class GameState extends State {
 
             this.spawnEnemy();
 
-            this.player.tick((int) this.Velocity);
+            this.player.tick(this.VelocityINT);
 
             if (!this.player.getIsAlive()) {
-                this.stateManager.setCurrentState(this.stateManager.getGameLostState());
+                this.fireStateChangeEvent(Constants.GAME_LOST_STATE);
             }
 
             if (this.DistanceLeft <= AIR_START) {
                 // victory
-                this.hasWon = true;
                 this.setIsPaused(true);
-                this.stateManager.setCurrentState(this.stateManager.getGameWonState());
+                this.fireStateChangeEvent(Constants.GAME_WON_STATE);
             }
 
             this.Velocity += 0.01;
@@ -160,7 +157,6 @@ public class GameState extends State {
 
             if (CollisionDetector.intersects(this.player.getBoundingBox(), enemy.getBoundingBox())) {
                 this.player.setHealth(this.player.getHealth() - 25);
-                System.out.println(this.player.getHealth());
                 this.explosions.add(ExplosionsFactory.createExplosion(enemy.getX(), enemy.getY()));
                 enemy.setIsAlive(false);
             }
@@ -185,6 +181,63 @@ public class GameState extends State {
 
                 nextEnemyTimer = MIN_SPAWN_TIME + this.random.nextInt(SPAWN_INTERVAL);
             }
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        this.keyCode = e.getKeyCode();
+
+        if (this.keyCode == KeyEvent.VK_UP) {
+            this.player.setIsMovingUp(true);
+        }
+        if (this.keyCode == KeyEvent.VK_DOWN) {
+            this.player.setIsMovingDown(true);
+        }
+        if (this.keyCode == KeyEvent.VK_LEFT) {
+            this.player.setIsMovingLeft(true);
+        }
+        if (this.keyCode == KeyEvent.VK_RIGHT) {
+            this.player.setIsMovingRight(true);
+        }
+        // hack for testing purposes
+        if (this.keyCode == KeyEvent.VK_A) {
+            this.player.setHealth(this.player.getHealth() + 100);
+        }
+        if (this.keyCode == KeyEvent.VK_S) {
+            this.player.setHealth(this.player.getHealth() - 100);
+        }
+        if (this.keyCode == KeyEvent.VK_Q) {
+            this.Velocity += 20;
+        }
+        if (this.keyCode == KeyEvent.VK_W) {
+            this.Velocity -= 20;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        this.keyCode = e.getKeyCode();
+
+        if (this.keyCode == KeyEvent.VK_UP) {
+            this.player.setIsMovingUp(false);
+        }
+        if (this.keyCode == KeyEvent.VK_DOWN) {
+            this.player.setIsMovingDown(false);
+        }
+        if (this.keyCode == KeyEvent.VK_LEFT) {
+            this.player.setIsMovingLeft(false);
+        }
+        if (this.keyCode == KeyEvent.VK_RIGHT) {
+            this.player.setIsMovingRight(false);
+        }
+        if (this.keyCode == KeyEvent.VK_ESCAPE) {
+            this.fireStateChangeEvent(Constants.MENU_STATE);
         }
     }
 }

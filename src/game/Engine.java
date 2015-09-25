@@ -1,14 +1,20 @@
 package game;
 
+import Constants.Constants;
+import Events.StateChangeEvent;
 import display.Display;
 import gfx.Assets;
+import interfaces.StateChangeListener;
+import state.GameEndState;
+import state.GameState;
 import state.State;
 import state.StateManager;
 
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 
-public class Engine implements Runnable {
+public class Engine implements Runnable, StateChangeListener {
     public static final int    WINDOW_WIDTH  = 800;
     public static final int    WINDOW_HEIGHT = 600;
     public static       String WINDOW_TITLE  = "Team Endor Java Teamwork - The Meteor";
@@ -45,12 +51,14 @@ public class Engine implements Runnable {
         }
 
         Assets.init();
-
-        this.stateManager = new StateManager(this);
+        this.stateManager = new StateManager();
+        this.currentState = stateManager.getCurrentState();
+        this.display.getCanvas().addKeyListener(this.currentState);
+        this.attachEvents();
     }
 
     private void tick() {
-        this.currentState = stateManager.getCurrentState();
+
         this.currentState.tick();
     }
 
@@ -96,6 +104,34 @@ public class Engine implements Runnable {
 
         this.stop();
         this.display.getFrame().dispose();
+    }
+
+    @Override
+    public void changeState(StateChangeEvent event) {
+        if(event.getTargetState().equals(Constants.EXIT_GAME_STATE)){
+            this.setIsRunning(false);
+            return;
+        }
+        if(event.getSource() instanceof GameEndState){
+            this.stateManager.restartGame();
+            this.stateManager.getState(Constants.GAME_STATE).addStateChangeListener(this);
+        }
+
+        //detaching old listener
+        this.display.getCanvas().removeKeyListener(this.currentState);
+
+        //setting state
+        this.stateManager.setCurrentState(event.getTargetState());
+        this.currentState = this.stateManager.getCurrentState();
+
+        //attaching new listener
+        this.display.getCanvas().addKeyListener(this.stateManager.getCurrentState());
+    }
+
+    private void attachEvents(){
+        for (State state : this.stateManager.getStates()) {
+            state.addStateChangeListener(this);
+        }
     }
 
     public synchronized void start() {

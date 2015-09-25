@@ -1,22 +1,24 @@
 package state;
 
+import Constants.Constants;
 import game.Engine;
 import gfx.Assets;
 import models.MenuButton;
 import models.backgrounds.Background;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CreditsState extends State {
+public class CreditsState extends State{
     private static final BufferedImage BACK_TO_MENU_BUTTON_HOVERED_IMAGE  = Assets.endGameBackToMenu;
     private static final BufferedImage BACK_TO_MENU_BUTTON_INACTIVE_IMAGE = Assets.endGameInactiveBackToMenu;
 
-    private int velocity = 5;
-
+    private int keyCode;
     private Background background;
 
     List<MenuButton> buttons;
@@ -40,10 +42,6 @@ public class CreditsState extends State {
 
     public int numberOfButtons() {
         return this.buttons.size();
-    }
-
-    private int getVelocity() {
-        return velocity;
     }
 
     public void init() {
@@ -80,6 +78,25 @@ public class CreditsState extends State {
 
         for (MenuButton button : this.buttons) {
             button.render(graphics);
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        this.keyCode = e.getKeyCode();
+
+        if (this.keyCode == KeyEvent.VK_ENTER) {
+            this.fireStateChangeEvent(Constants.MENU_STATE);
         }
     }
 }

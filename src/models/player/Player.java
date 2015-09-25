@@ -5,6 +5,7 @@ import interfaces.Killable;
 import models.MovableObject;
 import state.GameState;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Player extends MovableObject implements Killable {
@@ -12,7 +13,7 @@ public class Player extends MovableObject implements Killable {
     private int     health;
     private static final int METEOR_WIDTH   = 80;
     private static final int METEOR_HEIGHT  = 110;
-    private static       int animationFrame = 0;
+    private static       int animationFrame;
 
     public static final int MaxHealth = 1000;
 
@@ -20,7 +21,8 @@ public class Player extends MovableObject implements Killable {
         super(x, y, image, velocity);
 
         this.setHealth(health);
-        this.setIsAlive(true);
+        this.isAlive = true;
+        this.animationFrame = 0;
     }
 
     public int getHealth() {
@@ -31,27 +33,13 @@ public class Player extends MovableObject implements Killable {
         this.health = health;
     }
 
-    public void setIsAlive(boolean isAlive) {
-        this.isAlive = isAlive;
-    }
-
     @Override
     public boolean getIsAlive() {
-        return this.health > 0;
+        return this.getHealth() > 0;
     }
 
     @Override
     public void tick(int gameVelocity) {
-
-        if (animationFrame < 5) {
-            this.setImage(Assets.meteor.crop(0, 0, METEOR_WIDTH, METEOR_HEIGHT));
-        } else {
-            this.setImage(Assets.meteor.crop(METEOR_WIDTH, 0, METEOR_WIDTH, METEOR_HEIGHT));
-        }
-        animationFrame++;
-        if (animationFrame == 10) {
-            animationFrame = 0;
-        }
 
         if (this.isMovingUp()) {
             if (this.getY() - this.getVelocity() >= 0) {
@@ -76,5 +64,19 @@ public class Player extends MovableObject implements Killable {
                 this.move(this.getVelocity(), 0);
             }
         }
+    }
+
+    @Override
+    public void render(Graphics graphics) {
+        if (animationFrame < 5) {
+            this.setImage(Assets.meteor.crop(0, 0, METEOR_WIDTH, METEOR_HEIGHT));
+        } else {
+            this.setImage(Assets.meteor.crop(METEOR_WIDTH, 0, METEOR_WIDTH, METEOR_HEIGHT));
+        }
+        animationFrame++;
+        if (animationFrame == 10) {
+            animationFrame = 0;
+        }
+        super.render(graphics);
     }
 }
